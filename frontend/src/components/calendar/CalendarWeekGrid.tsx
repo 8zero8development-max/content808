@@ -1,11 +1,17 @@
 import { ContentItem } from "@/api/client";
+import { ProductThumbnail } from "@/components/calendar/ProductThumbnail";
 import {
     format, startOfWeek, addDays, isSameDay, parseISO
 } from "date-fns";
 
-const STATUS_BG: Record<string, string> = {
-    idea: "bg-indigo-500", draft: "bg-violet-500", review: "bg-amber-500",
-    approved: "bg-emerald-500", blocked: "bg-red-500", scheduled: "bg-blue-500", published: "bg-cyan-500",
+const STATUS_STRIP: Record<string, string> = {
+    idea: "border-l-indigo-500", draft: "border-l-violet-500", review: "border-l-amber-500",
+    approved: "border-l-emerald-500", blocked: "border-l-red-500", scheduled: "border-l-blue-500", published: "border-l-cyan-500",
+};
+
+const STATUS_DOT: Record<string, string> = {
+    idea: "bg-indigo-400", draft: "bg-violet-400", review: "bg-amber-400",
+    approved: "bg-emerald-400", blocked: "bg-red-400", scheduled: "bg-blue-400", published: "bg-cyan-400",
 };
 
 interface CalendarWeekGridProps {
@@ -41,7 +47,7 @@ export function CalendarWeekGrid({
                     <div
                         key={i}
                         className={`rounded-xl border transition-all duration-200 ${isToday ? "border-indigo-500/30 shadow-lg shadow-indigo-500/5" : "border-zinc-800/50"
-                            } min-h-[240px] ${dragItem ? "hover:border-indigo-500/20 hover:bg-indigo-500/[0.03]" : ""}`}
+                            } min-h-[280px] ${dragItem ? "hover:border-indigo-500/20 hover:bg-indigo-500/[0.03]" : ""}`}
                         onDragOver={(e) => e.preventDefault()}
                         onDrop={() => onDrop(day)}
                         onClick={(e) => {
@@ -61,8 +67,8 @@ export function CalendarWeekGrid({
                             )}
                         </div>
 
-                        {/* Items */}
-                        <div className="p-2 space-y-1.5">
+                        {/* Product-first items */}
+                        <div className="p-2 space-y-2">
                             {dayItems.map((item) => (
                                 <div
                                     key={item.id}
@@ -74,14 +80,19 @@ export function CalendarWeekGrid({
                                         e.stopPropagation();
                                         onItemClick(item, (e.currentTarget as HTMLElement).getBoundingClientRect());
                                     }}
-                                    className={`${STATUS_BG[item.status] || "bg-zinc-600"} text-white text-xs px-2.5 py-2 rounded-lg cursor-grab active:cursor-grabbing calendar-item`}
+                                    className={`border-l-2 ${STATUS_STRIP[item.status] || "border-l-zinc-500"} bg-zinc-800/60 hover:bg-zinc-700/60 rounded-lg p-2 cursor-grab active:cursor-grabbing calendar-item transition-colors`}
                                 >
-                                    <div className="flex items-center gap-1.5 mb-0.5">
-                                        <span className="font-medium truncate">{item.brand}</span>
+                                    <div className="flex items-start gap-2 mb-1.5">
+                                        <ProductThumbnail item={item} size="md" />
+                                        <div className="min-w-0 flex-1">
+                                            <div className="text-xs font-medium text-zinc-200 truncate">{item.product_title || item.brand}</div>
+                                            <div className="text-[10px] text-zinc-500 truncate">{item.brand}</div>
+                                        </div>
                                     </div>
-                                    <div className="flex items-center gap-2 text-[10px] text-white/60">
-                                        {item.platform && <span className="capitalize">{item.platform}</span>}
-                                        {item.assignee && <span>· {item.assignee}</span>}
+                                    <div className="flex items-center gap-2 text-[10px] text-zinc-500">
+                                        <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${STATUS_DOT[item.status] || "bg-zinc-500"}`} />
+                                        <span className="capitalize truncate">{item.status}</span>
+                                        {item.platform && <span className="text-zinc-600">· {item.platform}</span>}
                                     </div>
                                 </div>
                             ))}

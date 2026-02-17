@@ -78,6 +78,8 @@ export interface ContentItem {
   id: string;
   brand: string;
   product_url: string;
+  product_title: string;
+  product_image_url: string;
   campaign_goal: string;
   direction: string;
   pivot_notes: string;

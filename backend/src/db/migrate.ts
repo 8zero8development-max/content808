@@ -1,5 +1,6 @@
 import { pool } from './connection';
 import * as migration001 from './migrations/001_initial_schema';
+import * as migration002 from './migrations/002_add_product_fields';
 
 interface Migration {
   id: string;
@@ -9,6 +10,7 @@ interface Migration {
 
 const migrations: Migration[] = [
   { id: migration001.id, up: migration001.up, down: migration001.down },
+  { id: migration002.id, up: migration002.up, down: migration002.down },
 ];
 
 async function ensureMigrationsTable() {

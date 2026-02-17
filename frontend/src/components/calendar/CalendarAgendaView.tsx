@@ -1,5 +1,6 @@
 import { ContentItem } from "@/api/client";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { ProductThumbnail } from "@/components/calendar/ProductThumbnail";
 import { format, parseISO, isSameDay, isToday as isDateToday, isTomorrow, addDays } from "date-fns";
 import { Calendar, User } from "lucide-react";
 
@@ -74,7 +75,7 @@ export function CalendarAgendaView({ items, onItemClick }: CalendarAgendaViewPro
                             <span className="text-[10px] text-zinc-700">{items.length} item{items.length !== 1 ? "s" : ""}</span>
                         </div>
 
-                        {/* Items */}
+                        {/* Items — product-first */}
                         <div className="space-y-2 pl-1">
                             {items.map((item) => {
                                 const d = item.publish_date || item.due_date;
@@ -93,24 +94,30 @@ export function CalendarAgendaView({ items, onItemClick }: CalendarAgendaViewPro
                                             )}
                                         </div>
 
-                                        {/* Status dot divider */}
-                                        <StatusBadge status={item.status} showLabel={false} size="md" className="shrink-0" />
+                                        {/* Product thumbnail */}
+                                        <ProductThumbnail item={item} size="md" />
 
-                                        {/* Content */}
+                                        {/* Content — product-first */}
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2 mb-0.5">
                                                 <span className="text-sm font-medium text-zinc-200 truncate group-hover:text-white transition-colors">
-                                                    {item.brand}
+                                                    {item.product_title || item.brand}
                                                 </span>
+                                                <StatusBadge status={item.status} size="sm" />
                                                 {item.platform && (
                                                     <span className="text-[10px] text-zinc-600 uppercase tracking-wider shrink-0 bg-zinc-800/60 px-1.5 py-0.5 rounded">
                                                         {item.platform}
                                                     </span>
                                                 )}
                                             </div>
-                                            {item.campaign_goal && (
-                                                <p className="text-xs text-zinc-500 truncate">{item.campaign_goal}</p>
-                                            )}
+                                            <div className="flex items-center gap-2 text-xs text-zinc-500">
+                                                {item.product_title && item.brand !== item.product_title && (
+                                                    <span>{item.brand}</span>
+                                                )}
+                                                {item.campaign_goal && (
+                                                    <span className="truncate">{item.campaign_goal}</span>
+                                                )}
+                                            </div>
                                         </div>
 
                                         {/* Meta */}

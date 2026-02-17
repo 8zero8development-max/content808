@@ -18,6 +18,8 @@ export function ItemFormModal({ open, onClose, onSaved, item }: ItemFormModalPro
   const [form, setForm] = useState({
     brand: "",
     product_url: "",
+    product_title: "",
+    product_image_url: "",
     campaign_goal: "",
     direction: "",
     pivot_notes: "",
@@ -32,6 +34,8 @@ export function ItemFormModal({ open, onClose, onSaved, item }: ItemFormModalPro
       setForm({
         brand: item.brand || "",
         product_url: item.product_url || "",
+        product_title: item.product_title || "",
+        product_image_url: item.product_image_url || "",
         campaign_goal: item.campaign_goal || "",
         direction: item.direction || "",
         pivot_notes: item.pivot_notes || "",
@@ -41,7 +45,7 @@ export function ItemFormModal({ open, onClose, onSaved, item }: ItemFormModalPro
         assignee: item.assignee || "",
       });
     } else {
-      setForm({ brand: "", product_url: "", campaign_goal: "", direction: "", pivot_notes: "", platform: "", due_date: "", publish_date: "", assignee: "" });
+      setForm({ brand: "", product_url: "", product_title: "", product_image_url: "", campaign_goal: "", direction: "", pivot_notes: "", platform: "", due_date: "", publish_date: "", assignee: "" });
     }
   }, [item, open]);
 
@@ -86,10 +90,29 @@ export function ItemFormModal({ open, onClose, onSaved, item }: ItemFormModalPro
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Field label="Brand *" value={form.brand} onChange={(v) => set("brand", v)} placeholder="Brand name" />
+
+          {/* Product fields */}
+          <div className="p-3 rounded-lg bg-zinc-800/30 border border-zinc-700/30 space-y-3">
+            <div className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Product Info</div>
+            <Field label="Product Title" value={form.product_title} onChange={(v) => set("product_title", v)} placeholder="Product name or title" />
+            <Field label="Product Image URL" value={form.product_image_url} onChange={(v) => set("product_image_url", v)} placeholder="https://...image.jpg" />
+            {form.product_image_url && (
+              <div className="flex items-center gap-3">
+                <img
+                  src={form.product_image_url}
+                  alt="Preview"
+                  className="h-12 w-12 rounded-lg object-cover border border-zinc-700/50"
+                  onError={(e) => { (e.currentTarget as HTMLElement).style.display = 'none'; }}
+                />
+                <span className="text-[10px] text-zinc-600">Image preview</span>
+              </div>
+            )}
+            <Field label="Product URL" value={form.product_url} onChange={(v) => set("product_url", v)} placeholder="https://..." />
+          </div>
+
           <Field label="Campaign Goal" value={form.campaign_goal} onChange={(v) => set("campaign_goal", v)} placeholder="What's the goal?" multiline />
           <Field label="Direction" value={form.direction} onChange={(v) => set("direction", v)} placeholder="Creative direction" multiline />
           <Field label="Pivot Notes" value={form.pivot_notes} onChange={(v) => set("pivot_notes", v)} placeholder="Any pivot notes" multiline />
-          <Field label="Product URL" value={form.product_url} onChange={(v) => set("product_url", v)} placeholder="https://..." />
 
           <div>
             <label className="block text-xs font-medium text-zinc-400 mb-1.5">Platform</label>
