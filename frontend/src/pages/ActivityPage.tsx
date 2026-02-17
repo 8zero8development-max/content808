@@ -4,7 +4,7 @@ import { AuditEntry } from "@/api/client";
 import { format } from "date-fns";
 import { Activity, FileText, Edit, ChevronRight, Zap, Trash2, MessageSquare, Settings } from "lucide-react";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 const ACTION_ICONS: Record<string, React.ElementType> = {
   create: FileText, update: Edit, transition: ChevronRight,

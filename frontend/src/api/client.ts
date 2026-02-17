@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const API_URL = import.meta.env.VITE_API_URL || '';
 const BASE = `${API_URL}/api/v1/content-hub`;
 
 interface RequestOptions {
