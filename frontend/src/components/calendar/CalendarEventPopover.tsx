@@ -48,16 +48,16 @@ export function CalendarEventPopover({ item, anchorRect, onClose, onReschedule }
     return (
         <div
             ref={popoverRef}
-            className="fixed z-[60] w-[320px] bg-zinc-900 border border-zinc-700/60 rounded-xl shadow-2xl shadow-black/40 animate-scaleIn overflow-hidden"
+            className="fixed z-[60] w-[320px] bg-[hsl(var(--th-surface))] border border-[hsl(var(--th-border))] rounded-xl shadow-2xl shadow-black/20 dark:shadow-black/40 animate-scaleIn overflow-hidden"
             style={{ top: position.top, left: position.left }}
         >
             {/* Product hero */}
             <div className="flex items-center gap-3 px-4 pt-4 pb-3">
                 <ProductThumbnail item={item} size="lg" />
                 <div className="min-w-0 flex-1">
-                    <h3 className="text-sm font-semibold text-zinc-100 truncate">{item.product_title || item.brand}</h3>
+                    <h3 className="text-sm font-semibold text-[hsl(var(--th-text))] truncate">{item.product_title || item.brand}</h3>
                     {item.product_title && item.brand !== item.product_title && (
-                        <p className="text-[11px] text-zinc-500">{item.brand}</p>
+                        <p className="text-[11px] text-[hsl(var(--th-text-muted))]">{item.brand}</p>
                     )}
                     <div className="mt-1">
                         <StatusBadge status={item.status} size="sm" />
@@ -68,22 +68,22 @@ export function CalendarEventPopover({ item, anchorRect, onClose, onReschedule }
             {/* Details */}
             <div className="px-4 pb-3 space-y-1.5">
                 {item.campaign_goal && (
-                    <p className="text-xs text-zinc-400 line-clamp-2">{item.campaign_goal}</p>
+                    <p className="text-xs text-[hsl(var(--th-text-secondary))] line-clamp-2">{item.campaign_goal}</p>
                 )}
                 {item.assignee && (
-                    <div className="flex items-center gap-2 text-xs text-zinc-500">
-                        <User className="h-3.5 w-3.5 text-zinc-600" />
+                    <div className="flex items-center gap-2 text-xs text-[hsl(var(--th-text-muted))]">
+                        <User className="h-3.5 w-3.5 text-[hsl(var(--th-text-muted))]" />
                         <span>{item.assignee}</span>
                     </div>
                 )}
                 {item.platform && (
-                    <div className="flex items-center gap-2 text-xs text-zinc-500">
-                        <span className="text-[10px] uppercase tracking-wider bg-zinc-800/80 px-2 py-0.5 rounded font-medium">{item.platform}</span>
+                    <div className="flex items-center gap-2 text-xs text-[hsl(var(--th-text-muted))]">
+                        <span className="text-[10px] uppercase tracking-wider bg-[hsl(var(--th-input))] px-2 py-0.5 rounded font-medium">{item.platform}</span>
                     </div>
                 )}
                 {(item.publish_date || item.due_date) && (
-                    <div className="flex items-center gap-2 text-xs text-zinc-500">
-                        <Clock className="h-3.5 w-3.5 text-zinc-600" />
+                    <div className="flex items-center gap-2 text-xs text-[hsl(var(--th-text-muted))]">
+                        <Clock className="h-3.5 w-3.5 text-[hsl(var(--th-text-muted))]" />
                         <span>
                             {item.publish_date
                                 ? format(new Date(item.publish_date), "MMM d, yyyy h:mm a")
@@ -118,7 +118,7 @@ export function CalendarEventPopover({ item, anchorRect, onClose, onReschedule }
                 </button>
                 <button
                     onClick={() => onReschedule(item)}
-                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 text-xs font-medium hover:bg-zinc-700 transition-colors"
+                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[hsl(var(--th-input))] text-[hsl(var(--th-text-secondary))] text-xs font-medium hover:bg-[hsl(var(--th-surface-hover))] transition-colors"
                 >
                     <Clock className="h-3 w-3" />
                     Reschedule

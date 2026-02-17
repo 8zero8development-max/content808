@@ -59,14 +59,14 @@ export function ApprovalsPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-xl font-semibold">Approvals Queue</h1>
-          <p className="text-sm text-zinc-500 mt-1">{items.length} items awaiting review</p>
+          <p className="text-sm text-[hsl(var(--th-text-muted))] mt-1">{items.length} items awaiting review</p>
         </div>
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center h-64 text-zinc-500">Loading...</div>
+        <div className="flex items-center justify-center h-64 text-[hsl(var(--th-text-muted))]">Loading...</div>
       ) : items.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-64 text-zinc-500">
+        <div className="flex flex-col items-center justify-center h-64 text-[hsl(var(--th-text-muted))]">
           <CheckCircle className="h-12 w-12 mb-3 opacity-30" />
           <p className="text-lg font-medium">All clear!</p>
           <p className="text-sm">No items awaiting approval.</p>
@@ -74,15 +74,15 @@ export function ApprovalsPage() {
       ) : (
         <div className="space-y-3">
           {items.map((item) => (
-            <div key={item.id} className="bg-zinc-900/80 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 transition-colors">
+            <div key={item.id} className="bg-[hsl(var(--th-surface))] border border-[hsl(var(--th-border))] rounded-lg p-4 hover:border-[hsl(var(--th-text-muted)/0.5)] transition-colors">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0 cursor-pointer" onClick={() => navigate(`/item/${item.id}`)}>
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-sm font-semibold text-zinc-100">{item.brand}</h3>
+                    <h3 className="text-sm font-semibold text-[hsl(var(--th-text))]">{item.brand}</h3>
                     {item.platform && <Badge variant="secondary" className="text-[10px]">{item.platform}</Badge>}
                   </div>
-                  {item.campaign_goal && <p className="text-xs text-zinc-400 mb-2">{item.campaign_goal}</p>}
-                  <div className="flex items-center gap-4 text-[11px] text-zinc-500">
+                  {item.campaign_goal && <p className="text-xs text-[hsl(var(--th-text-secondary))] mb-2">{item.campaign_goal}</p>}
+                  <div className="flex items-center gap-4 text-[11px] text-[hsl(var(--th-text-muted))]">
                     {item.assignee && (
                       <span className="flex items-center gap-1"><User className="h-3 w-3" />{item.assignee}</span>
                     )}
@@ -91,7 +91,7 @@ export function ApprovalsPage() {
                       Updated {format(new Date(item.updated_at), "MMM d, h:mm a")}
                     </span>
                     {item.product_url && (
-                      <a href={item.product_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-zinc-300" onClick={(e) => e.stopPropagation()}>
+                      <a href={item.product_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-[hsl(var(--th-text-secondary))]" onClick={(e) => e.stopPropagation()}>
                         <ExternalLink className="h-3 w-3" />Link
                       </a>
                     )}
@@ -127,17 +127,17 @@ export function ApprovalsPage() {
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-zinc-400 mb-1.5">Reason *</label>
+              <label className="block text-xs font-medium text-[hsl(var(--th-text-secondary))] mb-1.5">Reason *</label>
               <textarea
                 value={blockReason}
                 onChange={(e) => setBlockReason(e.target.value)}
                 placeholder="Why is this being blocked?"
                 rows={3}
-                className="w-full px-3 py-2 rounded-md bg-zinc-800 border border-zinc-700 text-sm text-zinc-200 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-600"
+                className="w-full px-3 py-2 rounded-md bg-[hsl(var(--th-input))] border border-[hsl(var(--th-border))] text-sm text-[hsl(var(--th-text))] placeholder:text-[hsl(var(--th-text-muted))] focus:outline-none focus:ring-1 focus:ring-[hsl(var(--th-border))]"
               />
             </div>
             <div className="flex justify-end gap-2">
-              <button onClick={() => setBlockModal({ open: false, item: null })} className="px-4 py-2 text-sm rounded-md bg-zinc-800 text-zinc-300 hover:bg-zinc-700">Cancel</button>
+              <button onClick={() => setBlockModal({ open: false, item: null })} className="px-4 py-2 text-sm rounded-md bg-[hsl(var(--th-input))] text-[hsl(var(--th-text-secondary))] hover:bg-[hsl(var(--th-surface-hover))]">Cancel</button>
               <button onClick={handleBlock} className="px-4 py-2 text-sm rounded-md bg-red-600 text-white hover:bg-red-500">Block Item</button>
             </div>
           </div>

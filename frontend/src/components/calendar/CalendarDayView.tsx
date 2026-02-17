@@ -53,18 +53,18 @@ export function CalendarDayView({ currentDate, items, onItemClick, onSlotClick }
     return (
         <div className="animate-fadeIn">
             {/* Day header */}
-            <div className={`flex items-center gap-4 mb-4 px-4 py-3 rounded-xl ${isToday ? "bg-indigo-500/[0.06] border border-indigo-500/20" : "bg-zinc-900/40 border border-zinc-800/30"
+            <div className={`flex items-center gap-4 mb-4 px-4 py-3 rounded-xl ${isToday ? "bg-indigo-500/[0.06] border border-indigo-500/20" : "bg-[hsl(var(--th-surface))] border border-[hsl(var(--th-border))]"
                 }`}>
-                <div className={`text-3xl font-bold ${isToday ? "text-indigo-400" : "text-zinc-300"}`}>
+                <div className={`text-3xl font-bold ${isToday ? "text-indigo-400" : "text-[hsl(var(--th-text-secondary))]"}`}>
                     {format(currentDate, "d")}
                 </div>
                 <div>
-                    <div className={`text-sm font-semibold ${isToday ? "text-indigo-300" : "text-zinc-300"}`}>
+                    <div className={`text-sm font-semibold ${isToday ? "text-indigo-300" : "text-[hsl(var(--th-text))]"}`}>
                         {format(currentDate, "EEEE")}
                     </div>
-                    <div className="text-xs text-zinc-500">{format(currentDate, "MMMM yyyy")}</div>
+                    <div className="text-xs text-[hsl(var(--th-text-muted))]">{format(currentDate, "MMMM yyyy")}</div>
                 </div>
-                <div className="ml-auto text-xs text-zinc-500">
+                <div className="ml-auto text-xs text-[hsl(var(--th-text-muted))]">
                     {dayItems.length} item{dayItems.length !== 1 ? "s" : ""}
                 </div>
             </div>
@@ -72,17 +72,17 @@ export function CalendarDayView({ currentDate, items, onItemClick, onSlotClick }
             {/* All day items */}
             {allDay.length > 0 && (
                 <div className="mb-3">
-                    <div className="flex items-start gap-3 px-2 py-2 border-b border-zinc-800/30">
-                        <span className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider w-16 pt-1 text-right">All Day</span>
+                    <div className="flex items-start gap-3 px-2 py-2 border-b border-[hsl(var(--th-border))]">
+                        <span className="text-[10px] font-semibold text-[hsl(var(--th-text-muted))] uppercase tracking-wider w-16 pt-1 text-right">All Day</span>
                         <div className="flex-1 flex flex-wrap gap-2">
                             {allDay.map((item) => (
                                 <button
                                     key={item.id}
                                     onClick={(e) => onItemClick(item, (e.currentTarget as HTMLElement).getBoundingClientRect())}
-                                    className={`flex items-center gap-2 ${STATUS_BG[item.status] || "bg-zinc-800 border-zinc-700"} border rounded-lg px-3 py-2 hover:opacity-80 transition-opacity`}
+                                    className={`flex items-center gap-2 ${STATUS_BG[item.status] || "bg-[hsl(var(--th-surface-hover))] border-[hsl(var(--th-border))]"} border rounded-lg px-3 py-2 hover:opacity-80 transition-opacity`}
                                 >
                                     <ProductThumbnail item={item} size="sm" />
-                                    <span className="text-xs font-medium text-zinc-200">{item.product_title || item.brand}</span>
+                                    <span className="text-xs font-medium text-[hsl(var(--th-text))]">{item.product_title || item.brand}</span>
                                 </button>
                             ))}
                         </div>
@@ -99,7 +99,7 @@ export function CalendarDayView({ currentDate, items, onItemClick, onSlotClick }
                     return (
                         <div
                             key={hour}
-                            className="flex border-b border-zinc-800/20 min-h-[56px] group relative"
+                            className="flex border-b border-[hsl(var(--th-border)/0.3)] min-h-[56px] group relative"
                             onClick={() => {
                                 const d = new Date(currentDate);
                                 d.setHours(hour, 0, 0, 0);
@@ -108,7 +108,7 @@ export function CalendarDayView({ currentDate, items, onItemClick, onSlotClick }
                         >
                             {/* Time label */}
                             <div className="w-16 shrink-0 py-2 px-2 text-right">
-                                <span className={`text-[11px] font-medium ${isNowHour ? "text-indigo-400" : "text-zinc-600"}`}>
+                                <span className={`text-[11px] font-medium ${isNowHour ? "text-indigo-400" : "text-[hsl(var(--th-text-muted))]"}`}>
                                     {format(new Date(2000, 0, 1, hour), "h a")}
                                 </span>
                             </div>
@@ -122,18 +122,18 @@ export function CalendarDayView({ currentDate, items, onItemClick, onSlotClick }
                                             e.stopPropagation();
                                             onItemClick(item, (e.currentTarget as HTMLElement).getBoundingClientRect());
                                         }}
-                                        className={`${STATUS_BG[item.status] || "bg-zinc-800 border-zinc-700"} border rounded-lg px-3 py-2 mb-1 cursor-pointer calendar-item`}
+                                        className={`${STATUS_BG[item.status] || "bg-[hsl(var(--th-surface-hover))] border-[hsl(var(--th-border))]"} border rounded-lg px-3 py-2 mb-1 cursor-pointer calendar-item`}
                                     >
                                         <div className="flex items-center gap-3">
                                             <ProductThumbnail item={item} size="md" />
                                             <div className="min-w-0 flex-1">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-xs font-medium text-zinc-200 truncate">
+                                                    <span className="text-xs font-medium text-[hsl(var(--th-text))] truncate">
                                                         {item.product_title || item.brand}
                                                     </span>
                                                     <StatusBadge status={item.status} size="sm" />
                                                 </div>
-                                                <div className="flex items-center gap-3 mt-0.5 text-[10px] text-zinc-500">
+                                                <div className="flex items-center gap-3 mt-0.5 text-[10px] text-[hsl(var(--th-text-muted))]">
                                                     <span>{item.brand}</span>
                                                     {item.platform && <span className="capitalize">{item.platform}</span>}
                                                     {item.assignee && <span>{item.assignee}</span>}
@@ -149,7 +149,7 @@ export function CalendarDayView({ currentDate, items, onItemClick, onSlotClick }
                                 {/* Hover hint */}
                                 {hourItems.length === 0 && (
                                     <div className="h-full flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <span className="text-[10px] text-zinc-700">Click to add item</span>
+                                        <span className="text-[10px] text-[hsl(var(--th-text-muted))]">Click to add item</span>
                                     </div>
                                 )}
                             </div>

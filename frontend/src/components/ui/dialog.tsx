@@ -12,7 +12,7 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => onOpenChange(false)} />
+      <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm" onClick={() => onOpenChange(false)} />
       <div className="relative z-50 w-full max-w-lg mx-4">{children}</div>
     </div>
   );
@@ -20,7 +20,7 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
 
 export function DialogContent({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={cn("bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl p-6 max-h-[85vh] overflow-y-auto", className)}>
+    <div className={cn("bg-[hsl(var(--th-surface))] border border-[hsl(var(--th-border))] rounded-lg shadow-xl p-6 max-h-[85vh] overflow-y-auto transition-colors", className)}>
       {children}
     </div>
   );
@@ -31,12 +31,12 @@ export function DialogHeader({ children }: { children: React.ReactNode }) {
 }
 
 export function DialogTitle({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-lg font-semibold text-zinc-100">{children}</h2>;
+  return <h2 className="text-lg font-semibold text-[hsl(var(--th-text))]">{children}</h2>;
 }
 
 export function DialogClose({ onClick }: { onClick: () => void }) {
   return (
-    <button onClick={onClick} className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-100 transition">
+    <button onClick={onClick} className="absolute top-4 right-4 text-[hsl(var(--th-text-muted))] hover:text-[hsl(var(--th-text))] transition">
       <X className="h-4 w-4" />
     </button>
   );

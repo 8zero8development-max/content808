@@ -188,12 +188,12 @@ export function CalendarPage() {
       {/* ── Top Bar ── */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
-          <h1 className="text-xl font-bold bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent">
+          <h1 className="text-xl font-bold bg-gradient-to-r from-[hsl(var(--th-text))] to-[hsl(var(--th-text-secondary))] bg-clip-text text-transparent">
             Calendar
           </h1>
           <button
             onClick={() => setCurrentDate(new Date())}
-            className="px-3 py-1.5 text-xs rounded-lg bg-zinc-800/80 text-zinc-300 hover:bg-zinc-700 hover:text-zinc-100 transition-all duration-200 font-medium"
+            className="px-3 py-1.5 text-xs rounded-lg bg-[hsl(var(--th-input))] text-[hsl(var(--th-text-secondary))] hover:bg-[hsl(var(--th-surface-hover))] hover:text-[hsl(var(--th-text))] transition-all duration-200 font-medium"
           >
             Today
           </button>
@@ -201,14 +201,14 @@ export function CalendarPage() {
 
         <div className="flex items-center gap-3">
           {/* View switcher */}
-          <div className="flex rounded-xl border border-zinc-800/60 overflow-hidden glass-panel">
+          <div className="flex rounded-xl border border-[hsl(var(--th-border))] overflow-hidden glass-panel">
             {VIEW_CONFIG.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => setView(id)}
                 className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium transition-all duration-200 ${view === id
                   ? "bg-gradient-to-r from-indigo-600/30 to-cyan-600/20 text-white"
-                  : "text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.04]"
+                  : "text-[hsl(var(--th-text-muted))] hover:text-[hsl(var(--th-text-secondary))] hover:bg-[hsl(var(--th-surface-hover))]"
                   }`}
               >
                 <Icon className="h-3.5 w-3.5" />
@@ -219,11 +219,11 @@ export function CalendarPage() {
 
           {/* Date navigation */}
           <div className="flex items-center gap-1">
-            <button onClick={() => navigateDate(-1)} className="p-2 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors">
+            <button onClick={() => navigateDate(-1)} className="p-2 rounded-lg hover:bg-[hsl(var(--th-surface-hover))] text-[hsl(var(--th-text-secondary))] hover:text-[hsl(var(--th-text))] transition-colors">
               <ChevronLeft className="h-4 w-4" />
             </button>
-            <span className="text-sm font-semibold text-zinc-300 min-w-[180px] text-center">{getTitle()}</span>
-            <button onClick={() => navigateDate(1)} className="p-2 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors">
+            <span className="text-sm font-semibold text-[hsl(var(--th-text-secondary))] min-w-[180px] text-center">{getTitle()}</span>
+            <button onClick={() => navigateDate(1)} className="p-2 rounded-lg hover:bg-[hsl(var(--th-surface-hover))] text-[hsl(var(--th-text-secondary))] hover:text-[hsl(var(--th-text))] transition-colors">
               <ChevronRight className="h-4 w-4" />
             </button>
           </div>
@@ -303,7 +303,7 @@ export function CalendarPage() {
 
           {/* Saving indicator (subtle) */}
           {savingItemId && (
-            <div className="fixed bottom-6 right-6 flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-900/90 border border-zinc-700/50 text-xs text-zinc-400 shadow-xl backdrop-blur-sm animate-fadeIn z-50">
+            <div className="fixed bottom-6 right-6 flex items-center gap-2 px-4 py-2 rounded-lg bg-[hsl(var(--th-surface))] border border-[hsl(var(--th-border))] text-xs text-[hsl(var(--th-text-secondary))] shadow-xl backdrop-blur-sm animate-fadeIn z-50">
               <div className="h-3 w-3 rounded-full border-2 border-indigo-400 border-t-transparent animate-spin" />
               Saving...
             </div>
@@ -333,16 +333,16 @@ export function CalendarPage() {
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-zinc-400 mb-1.5">New Date/Time</label>
+              <label className="block text-xs font-medium text-[hsl(var(--th-text-secondary))] mb-1.5">New Date/Time</label>
               <input
                 type="datetime-local"
                 value={editModal.date ? editModal.date.slice(0, 16) : ""}
                 onChange={(e) => setEditModal((prev) => ({ ...prev, date: e.target.value }))}
-                className="w-full h-10 px-3 rounded-lg bg-zinc-800 border border-zinc-700 text-sm text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 transition-shadow"
+                className="w-full h-10 px-3 rounded-lg bg-[hsl(var(--th-input))] border border-[hsl(var(--th-border))] text-sm text-[hsl(var(--th-text))] focus:outline-none focus:ring-2 focus:ring-indigo-500/40 transition-shadow"
               />
             </div>
             <div className="flex justify-end gap-2">
-              <button onClick={() => setEditModal({ open: false, item: null, date: "" })} className="px-4 py-2 text-sm rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Cancel</button>
+              <button onClick={() => setEditModal({ open: false, item: null, date: "" })} className="px-4 py-2 text-sm rounded-lg bg-[hsl(var(--th-input))] text-[hsl(var(--th-text-secondary))] hover:bg-[hsl(var(--th-surface-hover))] transition-colors">Cancel</button>
               <button onClick={handleQuickEdit} className="px-4 py-2 text-sm rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-500 text-white font-medium hover:from-indigo-500 hover:to-indigo-400 transition-all shadow-lg shadow-indigo-600/20">Save</button>
             </div>
           </div>

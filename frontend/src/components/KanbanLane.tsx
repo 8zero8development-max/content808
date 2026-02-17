@@ -17,11 +17,11 @@ export function KanbanLane({ status, items, borderColor, bgColor, onItemClick }:
   return (
     <div
       ref={setNodeRef}
-      className={`flex-shrink-0 w-64 rounded-lg border-t-2 ${borderColor} ${isOver ? "bg-zinc-800/60" : "bg-zinc-900/40"} transition-colors`}
+      className={`flex-shrink-0 w-64 rounded-lg border-t-2 ${borderColor} ${isOver ? "bg-[hsl(var(--th-surface-hover))]" : "bg-[hsl(var(--th-surface)/0.6)]"} transition-colors`}
     >
       <div className={`flex items-center justify-between px-3 py-2.5 ${bgColor} rounded-t-lg`}>
-        <span className="text-xs font-semibold uppercase tracking-wider text-zinc-300">{status}</span>
-        <span className="text-xs font-medium text-zinc-500 bg-zinc-800/60 px-1.5 py-0.5 rounded">{items.length}</span>
+        <span className="text-xs font-semibold uppercase tracking-wider text-[hsl(var(--th-text-secondary))]">{status}</span>
+        <span className="text-xs font-medium text-[hsl(var(--th-text-muted))] bg-[hsl(var(--th-input))] px-1.5 py-0.5 rounded">{items.length}</span>
       </div>
       <div className="p-2 space-y-2 min-h-24">
         {items.map((item) => (

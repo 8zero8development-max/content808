@@ -61,18 +61,18 @@ export function CalendarSidebar({ currentDate, onDateSelect, items }: CalendarSi
             {/* Mini Calendar */}
             <div className="glass-panel rounded-xl p-3">
                 <div className="flex items-center justify-between mb-3">
-                    <button onClick={() => setMiniMonth(subMonths(miniMonth, 1))} className="p-1 rounded-md hover:bg-white/[0.06] text-zinc-400 transition-colors">
+                    <button onClick={() => setMiniMonth(subMonths(miniMonth, 1))} className="p-1 rounded-md hover:bg-[hsl(var(--th-surface-hover))] text-[hsl(var(--th-text-secondary))] transition-colors">
                         <ChevronLeft className="h-3.5 w-3.5" />
                     </button>
-                    <span className="text-xs font-semibold text-zinc-300">{format(miniMonth, "MMMM yyyy")}</span>
-                    <button onClick={() => setMiniMonth(addMonths(miniMonth, 1))} className="p-1 rounded-md hover:bg-white/[0.06] text-zinc-400 transition-colors">
+                    <span className="text-xs font-semibold text-[hsl(var(--th-text-secondary))]">{format(miniMonth, "MMMM yyyy")}</span>
+                    <button onClick={() => setMiniMonth(addMonths(miniMonth, 1))} className="p-1 rounded-md hover:bg-[hsl(var(--th-surface-hover))] text-[hsl(var(--th-text-secondary))] transition-colors">
                         <ChevronRight className="h-3.5 w-3.5" />
                     </button>
                 </div>
 
                 <div className="grid grid-cols-7 gap-0 mb-1">
                     {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
-                        <div key={i} className="text-center text-[10px] font-medium text-zinc-600 py-1">{d}</div>
+                        <div key={i} className="text-center text-[10px] font-medium text-[hsl(var(--th-text-muted))] py-1">{d}</div>
                     ))}
                 </div>
 
@@ -91,10 +91,10 @@ export function CalendarSidebar({ currentDate, onDateSelect, items }: CalendarSi
                                         onDateSelect(d);
                                         setMiniMonth(d);
                                     }}
-                                    className={`relative h-7 w-full flex items-center justify-center text-[11px] rounded-md transition-all duration-150 ${!inMonth ? "text-zinc-700" :
+                                    className={`relative h-7 w-full flex items-center justify-center text-[11px] rounded-md transition-all duration-150 ${!inMonth ? "text-[hsl(var(--th-text-muted))]" :
                                         isSelected ? "bg-indigo-600 text-white font-semibold" :
                                             isToday ? "text-indigo-400 font-semibold bg-indigo-500/10" :
-                                                "text-zinc-400 hover:bg-white/[0.06]"
+                                                "text-[hsl(var(--th-text-secondary))] hover:bg-[hsl(var(--th-surface-hover))]"
                                         }`}
                                 >
                                     {format(d, "d")}
@@ -110,12 +110,12 @@ export function CalendarSidebar({ currentDate, onDateSelect, items }: CalendarSi
 
             {/* Upcoming Items */}
             <div className="glass-panel rounded-xl p-3">
-                <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                <h3 className="text-xs font-semibold text-[hsl(var(--th-text-secondary))] uppercase tracking-wider mb-3 flex items-center gap-1.5">
                     <Clock className="h-3 w-3" />
                     Upcoming
                 </h3>
                 {upcoming.length === 0 ? (
-                    <p className="text-xs text-zinc-600 text-center py-2">No upcoming items</p>
+                    <p className="text-xs text-[hsl(var(--th-text-muted))] text-center py-2">No upcoming items</p>
                 ) : (
                     <div className="space-y-2">
                         {upcoming.map((item) => {
@@ -124,11 +124,11 @@ export function CalendarSidebar({ currentDate, onDateSelect, items }: CalendarSi
                                 <button
                                     key={item.id}
                                     onClick={() => d && onDateSelect(new Date(d))}
-                                    className="w-full text-left flex items-start gap-2 px-2 py-1.5 rounded-lg hover:bg-white/[0.04] transition-colors group"
+                                    className="w-full text-left flex items-start gap-2 px-2 py-1.5 rounded-lg hover:bg-[hsl(var(--th-surface-hover))] transition-colors group"
                                 >
                                     <div className="min-w-0 flex-1">
-                                        <p className="text-xs font-medium text-zinc-300 truncate group-hover:text-zinc-100 transition-colors">{item.brand}</p>
-                                        <p className="text-[10px] text-zinc-600">{d ? format(new Date(d), "MMM d, h:mm a") : ""}</p>
+                                        <p className="text-xs font-medium text-[hsl(var(--th-text-secondary))] truncate group-hover:text-[hsl(var(--th-text))] transition-colors">{item.brand}</p>
+                                        <p className="text-[10px] text-[hsl(var(--th-text-muted))]">{d ? format(new Date(d), "MMM d, h:mm a") : ""}</p>
                                     </div>
                                     <StatusBadge status={item.status} showLabel={false} size="sm" className="mt-0.5" />
                                 </button>
@@ -140,16 +140,16 @@ export function CalendarSidebar({ currentDate, onDateSelect, items }: CalendarSi
 
             {/* Status Legend */}
             <div className="glass-panel rounded-xl p-3">
-                <h3 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Legend</h3>
+                <h3 className="text-xs font-semibold text-[hsl(var(--th-text-secondary))] uppercase tracking-wider mb-3">Legend</h3>
                 <div className="space-y-1.5">
                     {Object.entries(STATUS_CONFIG).map(([status, config]) => (
                         <div key={status} className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                                 <span className={`h-2 w-2 rounded-full ${config.dot}`} />
-                                <span className="text-xs text-zinc-400 capitalize">{status}</span>
+                                <span className="text-xs text-[hsl(var(--th-text-secondary))] capitalize">{status}</span>
                             </div>
                             {statusCounts[status] !== undefined && (
-                                <span className="text-[10px] text-zinc-600 font-medium">{statusCounts[status]}</span>
+                                <span className="text-[10px] text-[hsl(var(--th-text-muted))] font-medium">{statusCounts[status]}</span>
                             )}
                         </div>
                     ))}

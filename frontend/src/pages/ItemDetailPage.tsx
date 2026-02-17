@@ -94,32 +94,32 @@ export function ItemDetailPage() {
     }
   };
 
-  if (loading) return <div className="flex items-center justify-center h-64 text-zinc-500">Loading...</div>;
-  if (!item) return <div className="flex items-center justify-center h-64 text-zinc-500">Item not found</div>;
+  if (loading) return <div className="flex items-center justify-center h-64 text-[hsl(var(--th-text-muted))]">Loading...</div>;
+  if (!item) return <div className="flex items-center justify-center h-64 text-[hsl(var(--th-text-muted))]">Item not found</div>;
 
   return (
     <div className="max-w-4xl mx-auto">
-      <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-sm text-zinc-400 hover:text-zinc-200 mb-4 transition-colors">
+      <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-sm text-[hsl(var(--th-text-secondary))] hover:text-[hsl(var(--th-text))] mb-4 transition-colors">
         <ArrowLeft className="h-4 w-4" />Back
       </button>
 
-      <div className="bg-zinc-900/80 border border-zinc-800 rounded-lg p-6 mb-4">
+      <div className="bg-[hsl(var(--th-surface))] border border-[hsl(var(--th-border))] rounded-lg p-6 mb-4">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-xl font-bold text-zinc-100">{item.brand}</h1>
+              <h1 className="text-xl font-bold text-[hsl(var(--th-text))]">{item.brand}</h1>
               <span className={`${STATUS_COLORS[item.status] || "bg-zinc-600"} text-white text-xs px-2.5 py-0.5 rounded-full font-medium`}>
                 {item.status}
               </span>
               {item.platform && <Badge variant="secondary">{item.platform}</Badge>}
             </div>
-            {item.campaign_goal && <p className="text-sm text-zinc-400 mb-3">{item.campaign_goal}</p>}
+            {item.campaign_goal && <p className="text-sm text-[hsl(var(--th-text-secondary))] mb-3">{item.campaign_goal}</p>}
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            <button onClick={() => setEditOpen(true)} className="p-2 rounded-md bg-zinc-800 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 transition-colors">
+            <button onClick={() => setEditOpen(true)} className="p-2 rounded-md bg-[hsl(var(--th-input))] text-[hsl(var(--th-text-secondary))] hover:text-[hsl(var(--th-text))] hover:bg-[hsl(var(--th-surface-hover))] transition-colors">
               <Edit className="h-4 w-4" />
             </button>
-            <button onClick={handleDelete} className="p-2 rounded-md bg-zinc-800 text-red-400 hover:text-red-300 hover:bg-zinc-700 transition-colors">
+            <button onClick={handleDelete} className="p-2 rounded-md bg-[hsl(var(--th-input))] text-red-400 hover:text-red-300 hover:bg-[hsl(var(--th-surface-hover))] transition-colors">
               <Trash2 className="h-4 w-4" />
             </button>
           </div>
@@ -134,14 +134,14 @@ export function ItemDetailPage() {
 
         {item.direction && (
           <div className="mb-3">
-            <label className="text-xs font-medium text-zinc-500 mb-1 block">Direction</label>
-            <p className="text-sm text-zinc-300">{item.direction}</p>
+            <label className="text-xs font-medium text-[hsl(var(--th-text-muted))] mb-1 block">Direction</label>
+            <p className="text-sm text-[hsl(var(--th-text-secondary))]">{item.direction}</p>
           </div>
         )}
         {item.pivot_notes && (
           <div className="mb-3">
-            <label className="text-xs font-medium text-zinc-500 mb-1 block">Pivot Notes</label>
-            <p className="text-sm text-zinc-300">{item.pivot_notes}</p>
+            <label className="text-xs font-medium text-[hsl(var(--th-text-muted))] mb-1 block">Pivot Notes</label>
+            <p className="text-sm text-[hsl(var(--th-text-secondary))]">{item.pivot_notes}</p>
           </div>
         )}
         {item.product_url && (
@@ -151,7 +151,7 @@ export function ItemDetailPage() {
         )}
 
         {item.valid_transitions && item.valid_transitions.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-zinc-800">
+          <div className="mt-4 pt-4 border-t border-[hsl(var(--th-border))]">
             <label className="text-xs font-medium text-zinc-500 mb-2 block">Transition to</label>
             <div className="flex flex-wrap gap-2">
               {item.valid_transitions.map((t) => (
@@ -168,13 +168,13 @@ export function ItemDetailPage() {
         )}
       </div>
 
-      <div className="bg-zinc-900/80 border border-zinc-800 rounded-lg">
-        <div className="flex border-b border-zinc-800">
+      <div className="bg-[hsl(var(--th-surface))] border border-[hsl(var(--th-border))] rounded-lg">
+        <div className="flex border-b border-[hsl(var(--th-border))]">
           {(["comments", "history", "outputs"] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`px-4 py-3 text-sm font-medium capitalize transition-colors ${tab === t ? "text-zinc-100 border-b-2 border-indigo-500" : "text-zinc-500 hover:text-zinc-300"}`}
+              className={`px-4 py-3 text-sm font-medium capitalize transition-colors ${tab === t ? "text-[hsl(var(--th-text))] border-b-2 border-indigo-500" : "text-[hsl(var(--th-text-muted))] hover:text-[hsl(var(--th-text-secondary))]"}`}
             >
               {t === "comments" && <MessageSquare className="h-3.5 w-3.5 inline mr-1.5" />}
               {t === "history" && <Activity className="h-3.5 w-3.5 inline mr-1.5" />}
@@ -187,15 +187,15 @@ export function ItemDetailPage() {
         <div className="p-4">
           {tab === "comments" && (
             <div>
-              {comments.length === 0 && <p className="text-sm text-zinc-500 mb-4">No comments yet.</p>}
+              {comments.length === 0 && <p className="text-sm text-[hsl(var(--th-text-muted))] mb-4">No comments yet.</p>}
               <div className="space-y-3 mb-4">
                 {comments.map((c) => (
-                  <div key={c.id} className="bg-zinc-800/50 rounded-lg p-3">
+                  <div key={c.id} className="bg-[hsl(var(--th-input)/0.5)] rounded-lg p-3">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-medium text-zinc-300">{c.user_name || c.user_id}</span>
-                      <span className="text-[11px] text-zinc-600">{format(new Date(c.created_at), "MMM d, h:mm a")}</span>
+                      <span className="text-xs font-medium text-[hsl(var(--th-text-secondary))]">{c.user_name || c.user_id}</span>
+                      <span className="text-[11px] text-[hsl(var(--th-text-muted))]">{format(new Date(c.created_at), "MMM d, h:mm a")}</span>
                     </div>
-                    <p className="text-sm text-zinc-400">{c.body}</p>
+                    <p className="text-sm text-[hsl(var(--th-text-secondary))]">{c.body}</p>
                   </div>
                 ))}
               </div>
@@ -206,7 +206,7 @@ export function ItemDetailPage() {
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Add a comment..."
                   onKeyDown={(e) => e.key === "Enter" && handleAddComment()}
-                  className="flex-1 h-9 px-3 rounded-md bg-zinc-800 border border-zinc-700 text-sm text-zinc-200 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-600"
+                  className="flex-1 h-9 px-3 rounded-md bg-[hsl(var(--th-input))] border border-[hsl(var(--th-border))] text-sm text-[hsl(var(--th-text))] placeholder:text-[hsl(var(--th-text-muted))] focus:outline-none focus:ring-1 focus:ring-[hsl(var(--th-border))]"
                 />
                 <button onClick={handleAddComment} className="px-3 py-1.5 rounded-md bg-indigo-600 text-white text-sm hover:bg-indigo-500 transition-colors">
                   <Send className="h-4 w-4" />
@@ -217,25 +217,25 @@ export function ItemDetailPage() {
 
           {tab === "history" && (
             <div className="space-y-3">
-              {history.length === 0 && <p className="text-sm text-zinc-500">No activity yet.</p>}
+              {history.length === 0 && <p className="text-sm text-[hsl(var(--th-text-muted))]">No activity yet.</p>}
               {history.map((h) => {
                 const Icon = ACTION_ICONS[h.action] || Activity;
                 return (
                   <div key={h.id} className="flex items-start gap-3">
-                    <div className="mt-0.5 h-6 w-6 rounded-full bg-zinc-800 flex items-center justify-center shrink-0">
-                      <Icon className="h-3 w-3 text-zinc-400" />
+                    <div className="mt-0.5 h-6 w-6 rounded-full bg-[hsl(var(--th-input))] flex items-center justify-center shrink-0">
+                      <Icon className="h-3 w-3 text-[hsl(var(--th-text-secondary))]" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-zinc-300">{h.actor}</span>
-                        <span className="text-xs text-zinc-500">{h.action}</span>
+                        <span className="text-xs font-medium text-[hsl(var(--th-text-secondary))]">{h.actor}</span>
+                        <span className="text-xs text-[hsl(var(--th-text-muted))]">{h.action}</span>
                         {h.details && (h.details as Record<string, unknown>).from ? (
-                          <span className="text-xs text-zinc-500">
+                          <span className="text-xs text-[hsl(var(--th-text-muted))]">
                             {String((h.details as Record<string, unknown>).from)} → {String((h.details as Record<string, unknown>).to)}
                           </span>
                         ) : null}
                       </div>
-                      <span className="text-[11px] text-zinc-600">{format(new Date(h.created_at), "MMM d, h:mm a")}</span>
+                      <span className="text-[11px] text-[hsl(var(--th-text-muted))]">{format(new Date(h.created_at), "MMM d, h:mm a")}</span>
                     </div>
                   </div>
                 );
@@ -245,14 +245,14 @@ export function ItemDetailPage() {
 
           {tab === "outputs" && (
             <div className="space-y-3">
-              {outputs.length === 0 && <p className="text-sm text-zinc-500">No outputs yet.</p>}
+              {outputs.length === 0 && <p className="text-sm text-[hsl(var(--th-text-muted))]">No outputs yet.</p>}
               {outputs.map((o) => (
-                <div key={o.id} className="bg-zinc-800/50 rounded-lg p-3">
+                <div key={o.id} className="bg-[hsl(var(--th-input)/0.5)] rounded-lg p-3">
                   <div className="flex items-center gap-2 mb-2">
                     <Badge variant="secondary">{o.output_type}</Badge>
-                    <span className="text-[11px] text-zinc-600">{format(new Date(o.created_at), "MMM d, h:mm a")}</span>
+                    <span className="text-[11px] text-[hsl(var(--th-text-muted))]">{format(new Date(o.created_at), "MMM d, h:mm a")}</span>
                   </div>
-                  <pre className="text-xs text-zinc-400 whitespace-pre-wrap overflow-hidden">{JSON.stringify(o.output_data, null, 2)}</pre>
+                  <pre className="text-xs text-[hsl(var(--th-text-secondary))] whitespace-pre-wrap overflow-hidden">{JSON.stringify(o.output_data, null, 2)}</pre>
                 </div>
               ))}
             </div>
@@ -270,17 +270,17 @@ export function ItemDetailPage() {
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-zinc-400 mb-1.5">Reason (optional)</label>
+              <label className="block text-xs font-medium text-[hsl(var(--th-text-secondary))] mb-1.5">Reason (optional)</label>
               <textarea
                 value={transitionReason}
                 onChange={(e) => setTransitionReason(e.target.value)}
                 placeholder="Why are you making this transition?"
                 rows={2}
-                className="w-full px-3 py-2 rounded-md bg-zinc-800 border border-zinc-700 text-sm text-zinc-200 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-600"
+                className="w-full px-3 py-2 rounded-md bg-[hsl(var(--th-input))] border border-[hsl(var(--th-border))] text-sm text-[hsl(var(--th-text))] placeholder:text-[hsl(var(--th-text-muted))] focus:outline-none focus:ring-1 focus:ring-[hsl(var(--th-border))]"
               />
             </div>
             <div className="flex justify-end gap-2">
-              <button onClick={() => setTransitionModal({ open: false, to: "" })} className="px-4 py-2 text-sm rounded-md bg-zinc-800 text-zinc-300 hover:bg-zinc-700">Cancel</button>
+              <button onClick={() => setTransitionModal({ open: false, to: "" })} className="px-4 py-2 text-sm rounded-md bg-[hsl(var(--th-input))] text-[hsl(var(--th-text-secondary))] hover:bg-[hsl(var(--th-surface-hover))]">Cancel</button>
               <button onClick={handleTransition} className={`px-4 py-2 text-sm rounded-md text-white hover:opacity-80 ${STATUS_COLORS[transitionModal.to] || "bg-indigo-600"}`}>
                 Confirm
               </button>
@@ -295,10 +295,10 @@ export function ItemDetailPage() {
 function InfoField({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
   return (
     <div>
-      <div className="flex items-center gap-1 text-[11px] text-zinc-500 mb-0.5">
+      <div className="flex items-center gap-1 text-[11px] text-[hsl(var(--th-text-muted))] mb-0.5">
         <Icon className="h-3 w-3" />{label}
       </div>
-      <div className="text-sm text-zinc-300">{value}</div>
+      <div className="text-sm text-[hsl(var(--th-text-secondary))]">{value}</div>
     </div>
   );
 }

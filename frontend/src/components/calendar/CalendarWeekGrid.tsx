@@ -46,7 +46,7 @@ export function CalendarWeekGrid({
                 return (
                     <div
                         key={i}
-                        className={`rounded-xl border transition-all duration-200 ${isToday ? "border-indigo-500/30 shadow-lg shadow-indigo-500/5" : "border-zinc-800/50"
+                        className={`rounded-xl border transition-all duration-200 ${isToday ? "border-indigo-500/30 shadow-lg shadow-indigo-500/5" : "border-[hsl(var(--th-border))]"
                             } min-h-[280px] ${dragItem ? "hover:border-indigo-500/20 hover:bg-indigo-500/[0.03]" : ""}`}
                         onDragOver={(e) => e.preventDefault()}
                         onDrop={() => onDrop(day)}
@@ -56,14 +56,14 @@ export function CalendarWeekGrid({
                         }}
                     >
                         {/* Day header */}
-                        <div className={`px-3 py-3 border-b transition-colors ${isToday ? "border-indigo-500/20 bg-indigo-500/[0.06]" : "border-zinc-800/30"
+                        <div className={`px-3 py-3 border-b transition-colors ${isToday ? "border-indigo-500/20 bg-indigo-500/[0.06]" : "border-[hsl(var(--th-border)/0.4)]"
                             }`}>
-                            <div className="text-[10px] font-medium text-zinc-500 uppercase tracking-wider">{format(day, "EEE")}</div>
-                            <div className={`text-xl font-bold ${isToday ? "text-indigo-400" : "text-zinc-300"}`}>
+                            <div className="text-[10px] font-medium text-[hsl(var(--th-text-muted))] uppercase tracking-wider">{format(day, "EEE")}</div>
+                            <div className={`text-xl font-bold ${isToday ? "text-indigo-400" : "text-[hsl(var(--th-text-secondary))]"}`}>
                                 {format(day, "d")}
                             </div>
                             {dayItems.length > 0 && (
-                                <div className="text-[10px] text-zinc-600 mt-0.5">{dayItems.length} item{dayItems.length !== 1 ? "s" : ""}</div>
+                                <div className="text-[10px] text-[hsl(var(--th-text-muted))] mt-0.5">{dayItems.length} item{dayItems.length !== 1 ? "s" : ""}</div>
                             )}
                         </div>
 
@@ -80,19 +80,19 @@ export function CalendarWeekGrid({
                                         e.stopPropagation();
                                         onItemClick(item, (e.currentTarget as HTMLElement).getBoundingClientRect());
                                     }}
-                                    className={`border-l-2 ${STATUS_STRIP[item.status] || "border-l-zinc-500"} bg-zinc-800/60 hover:bg-zinc-700/60 rounded-lg p-2 cursor-grab active:cursor-grabbing calendar-item transition-colors`}
+                                    className={`border-l-2 ${STATUS_STRIP[item.status] || "border-l-zinc-500"} bg-[hsl(var(--th-surface-hover))] hover:bg-[hsl(var(--th-input))] rounded-lg p-2 cursor-grab active:cursor-grabbing calendar-item transition-colors`}
                                 >
                                     <div className="flex items-start gap-2 mb-1.5">
                                         <ProductThumbnail item={item} size="md" />
                                         <div className="min-w-0 flex-1">
-                                            <div className="text-xs font-medium text-zinc-200 truncate">{item.product_title || item.brand}</div>
-                                            <div className="text-[10px] text-zinc-500 truncate">{item.brand}</div>
+                                            <div className="text-xs font-medium text-[hsl(var(--th-text))] truncate">{item.product_title || item.brand}</div>
+                                            <div className="text-[10px] text-[hsl(var(--th-text-muted))] truncate">{item.brand}</div>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-2 text-[10px] text-zinc-500">
+                                    <div className="flex items-center gap-2 text-[10px] text-[hsl(var(--th-text-secondary))]">
                                         <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${STATUS_DOT[item.status] || "bg-zinc-500"}`} />
                                         <span className="capitalize truncate">{item.status}</span>
-                                        {item.platform && <span className="text-zinc-600">· {item.platform}</span>}
+                                        {item.platform && <span className="text-[hsl(var(--th-text-muted))]">· {item.platform}</span>}
                                     </div>
                                 </div>
                             ))}

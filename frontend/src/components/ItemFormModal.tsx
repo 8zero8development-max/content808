@@ -92,8 +92,8 @@ export function ItemFormModal({ open, onClose, onSaved, item }: ItemFormModalPro
           <Field label="Brand *" value={form.brand} onChange={(v) => set("brand", v)} placeholder="Brand name" />
 
           {/* Product fields */}
-          <div className="p-3 rounded-lg bg-zinc-800/30 border border-zinc-700/30 space-y-3">
-            <div className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Product Info</div>
+          <div className="p-3 rounded-lg bg-[hsl(var(--th-input)/0.4)] border border-[hsl(var(--th-border)/0.4)] space-y-3">
+            <div className="text-[10px] font-semibold text-[hsl(var(--th-text-muted))] uppercase tracking-wider">Product Info</div>
             <Field label="Product Title" value={form.product_title} onChange={(v) => set("product_title", v)} placeholder="Product name or title" />
             <Field label="Product Image URL" value={form.product_image_url} onChange={(v) => set("product_image_url", v)} placeholder="https://...image.jpg" />
             {form.product_image_url && (
@@ -101,10 +101,10 @@ export function ItemFormModal({ open, onClose, onSaved, item }: ItemFormModalPro
                 <img
                   src={form.product_image_url}
                   alt="Preview"
-                  className="h-12 w-12 rounded-lg object-cover border border-zinc-700/50"
+                  className="h-12 w-12 rounded-lg object-cover border border-[hsl(var(--th-border))]"
                   onError={(e) => { (e.currentTarget as HTMLElement).style.display = 'none'; }}
                 />
-                <span className="text-[10px] text-zinc-600">Image preview</span>
+                <span className="text-[10px] text-[hsl(var(--th-text-muted))]">Image preview</span>
               </div>
             )}
             <Field label="Product URL" value={form.product_url} onChange={(v) => set("product_url", v)} placeholder="https://..." />
@@ -115,11 +115,11 @@ export function ItemFormModal({ open, onClose, onSaved, item }: ItemFormModalPro
           <Field label="Pivot Notes" value={form.pivot_notes} onChange={(v) => set("pivot_notes", v)} placeholder="Any pivot notes" multiline />
 
           <div>
-            <label className="block text-xs font-medium text-zinc-400 mb-1.5">Platform</label>
+            <label className="block text-xs font-medium text-[hsl(var(--th-text-secondary))] mb-1.5">Platform</label>
             <select
               value={form.platform}
               onChange={(e) => set("platform", e.target.value)}
-              className="w-full h-9 px-3 rounded-md bg-zinc-800 border border-zinc-700 text-sm text-zinc-200 focus:outline-none focus:ring-1 focus:ring-zinc-600"
+              className="w-full h-9 px-3 rounded-md bg-[hsl(var(--th-input))] border border-[hsl(var(--th-border))] text-sm text-[hsl(var(--th-text))] focus:outline-none focus:ring-1 focus:ring-[hsl(var(--th-border))]"
             >
               <option value="">Select platform</option>
               {PLATFORMS.map((p) => (
@@ -130,21 +130,21 @@ export function ItemFormModal({ open, onClose, onSaved, item }: ItemFormModalPro
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-zinc-400 mb-1.5">Due Date</label>
+              <label className="block text-xs font-medium text-[hsl(var(--th-text-secondary))] mb-1.5">Due Date</label>
               <input
                 type="datetime-local"
                 value={form.due_date}
                 onChange={(e) => set("due_date", e.target.value)}
-                className="w-full h-9 px-3 rounded-md bg-zinc-800 border border-zinc-700 text-sm text-zinc-200 focus:outline-none focus:ring-1 focus:ring-zinc-600"
+                className="w-full h-9 px-3 rounded-md bg-[hsl(var(--th-input))] border border-[hsl(var(--th-border))] text-sm text-[hsl(var(--th-text))] focus:outline-none focus:ring-1 focus:ring-[hsl(var(--th-border))]"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-zinc-400 mb-1.5">Publish Date</label>
+              <label className="block text-xs font-medium text-[hsl(var(--th-text-secondary))] mb-1.5">Publish Date</label>
               <input
                 type="datetime-local"
                 value={form.publish_date}
                 onChange={(e) => set("publish_date", e.target.value)}
-                className="w-full h-9 px-3 rounded-md bg-zinc-800 border border-zinc-700 text-sm text-zinc-200 focus:outline-none focus:ring-1 focus:ring-zinc-600"
+                className="w-full h-9 px-3 rounded-md bg-[hsl(var(--th-input))] border border-[hsl(var(--th-border))] text-sm text-[hsl(var(--th-text))] focus:outline-none focus:ring-1 focus:ring-[hsl(var(--th-border))]"
               />
             </div>
           </div>
@@ -152,7 +152,7 @@ export function ItemFormModal({ open, onClose, onSaved, item }: ItemFormModalPro
           <Field label="Assignee" value={form.assignee} onChange={(v) => set("assignee", v)} placeholder="Assigned to..." />
 
           <div className="flex justify-end gap-2 pt-2">
-            <button type="button" onClick={onClose} className="px-4 py-2 text-sm rounded-md bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">
+            <button type="button" onClick={onClose} className="px-4 py-2 text-sm rounded-md bg-[hsl(var(--th-input))] text-[hsl(var(--th-text-secondary))] hover:bg-[hsl(var(--th-surface-hover))] transition-colors">
               Cancel
             </button>
             <button type="submit" disabled={loading} className="px-4 py-2 text-sm rounded-md bg-indigo-600 text-white hover:bg-indigo-500 disabled:opacity-50 transition-colors">
@@ -168,10 +168,10 @@ export function ItemFormModal({ open, onClose, onSaved, item }: ItemFormModalPro
 function Field({ label, value, onChange, placeholder, multiline }: {
   label: string; value: string; onChange: (v: string) => void; placeholder?: string; multiline?: boolean;
 }) {
-  const cls = "w-full px-3 rounded-md bg-zinc-800 border border-zinc-700 text-sm text-zinc-200 placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-600";
+  const cls = "w-full px-3 rounded-md bg-[hsl(var(--th-input))] border border-[hsl(var(--th-border))] text-sm text-[hsl(var(--th-text))] placeholder:text-[hsl(var(--th-text-muted))] focus:outline-none focus:ring-1 focus:ring-[hsl(var(--th-border))]";
   return (
     <div>
-      <label className="block text-xs font-medium text-zinc-400 mb-1.5">{label}</label>
+      <label className="block text-xs font-medium text-[hsl(var(--th-text-secondary))] mb-1.5">{label}</label>
       {multiline ? (
         <textarea value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} rows={2} className={`${cls} py-2`} />
       ) : (

@@ -27,12 +27,12 @@ export function KpiStrip() {
 
   return (
     <div className="flex flex-wrap gap-2 mb-4">
-      <KpiCard icon={FileText} label="Total Items" value={stats.total} color="bg-zinc-800/60 text-zinc-300" />
+      <KpiCard icon={FileText} label="Total Items" value={stats.total} color="bg-[hsl(var(--th-surface-hover))] text-[hsl(var(--th-text-secondary))]" />
       <KpiCard icon={Clock} label="Due Soon" value={stats.due_soon} color="bg-amber-500/10 text-amber-400" />
       <KpiCard icon={CalendarCheck} label="Scheduled Today" value={stats.scheduled_today} color="bg-blue-500/10 text-blue-400" />
       <KpiCard icon={AlertTriangle} label="Blocked" value={stats.by_status.blocked || 0} color="bg-red-500/10 text-red-400" />
       {Object.entries(stats.by_status).map(([status, count]) => (
-        <div key={status} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium ${STATUS_COLORS[status] || "bg-zinc-800 text-zinc-400"}`}>
+        <div key={status} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium ${STATUS_COLORS[status] || "bg-[hsl(var(--th-input))] text-[hsl(var(--th-text-secondary))]"}`}>
           <span className="capitalize">{status}</span>
           <span className="font-bold">{count}</span>
         </div>

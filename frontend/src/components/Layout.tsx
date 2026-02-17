@@ -5,6 +5,7 @@ import {
   ChevronLeft, ChevronRight
 } from "lucide-react";
 import { Tooltip } from "@/components/ui/Tooltip";
+import { ThemeToggle } from "@/components/ThemeProvider";
 
 const navItems = [
   { to: "/", label: "Kanban", icon: LayoutDashboard },
@@ -19,14 +20,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex">
+    <div className="min-h-screen bg-[hsl(var(--th-bg))] text-[hsl(var(--th-text))] flex transition-colors duration-300">
       {/* ── Sidebar ── */}
       <aside
         className={`fixed top-0 left-0 h-screen z-50 flex flex-col glass-panel sidebar-transition ${collapsed ? "w-16" : "w-60"
           }`}
       >
         {/* Brand */}
-        <div className="flex items-center gap-3 px-4 h-16 border-b border-white/[0.04] shrink-0">
+        <div className="flex items-center gap-3 px-4 h-16 border-b border-[hsl(var(--glass-border))] shrink-0">
           <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-500 via-violet-500 to-cyan-400 flex items-center justify-center text-sm font-black text-white shrink-0 animate-float">
             C
           </div>
@@ -50,12 +51,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 to={item.to}
                 className={`group flex items-center gap-3 rounded-lg text-sm font-medium transition-all duration-200 ${collapsed ? "justify-center px-2 py-2.5" : "px-3 py-2.5"
                   } ${active
-                    ? "bg-gradient-to-r from-indigo-500/15 to-cyan-500/10 text-white shadow-sm shadow-indigo-500/10"
-                    : "text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]"
+                    ? "bg-gradient-to-r from-indigo-500/15 to-cyan-500/10 text-[hsl(var(--th-text))] shadow-sm shadow-indigo-500/10"
+                    : "text-[hsl(var(--th-text-secondary))] hover:text-[hsl(var(--th-text))] hover:bg-[hsl(var(--th-surface-hover))]"
                   }`}
               >
                 <div className="relative shrink-0">
-                  <item.icon className={`h-[18px] w-[18px] transition-colors ${active ? "text-indigo-400" : "text-zinc-500 group-hover:text-zinc-300"}`} />
+                  <item.icon className={`h-[18px] w-[18px] transition-colors ${active ? "text-indigo-400" : "text-[hsl(var(--th-text-muted))] group-hover:text-[hsl(var(--th-text-secondary))]"}`} />
                   {active && (
                     <span className="absolute -left-[17px] top-1/2 -translate-y-1/2 w-[3px] h-4 rounded-r-full bg-indigo-500" />
                   )}
@@ -77,24 +78,27 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </nav>
 
         {/* Bottom section */}
-        <div className="border-t border-white/[0.04] p-3 shrink-0">
+        <div className="border-t border-[hsl(var(--th-border))] p-3 shrink-0">
           {/* User avatar */}
           <div className={`flex items-center gap-3 mb-3 ${collapsed ? "justify-center" : ""}`}>
-            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-zinc-700 to-zinc-800 flex items-center justify-center text-xs font-semibold text-zinc-300 ring-2 ring-zinc-700/50 shrink-0">
+            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-500/20 to-violet-500/20 flex items-center justify-center text-xs font-semibold text-[hsl(var(--th-text-secondary))] ring-2 ring-[hsl(var(--th-border))] shrink-0">
               SU
             </div>
             {!collapsed && (
               <div className="animate-fadeIn min-w-0">
-                <p className="text-xs font-medium text-zinc-200 truncate">Staff User</p>
-                <p className="text-[10px] text-zinc-500">Admin</p>
+                <p className="text-xs font-medium text-[hsl(var(--th-text))] truncate">Staff User</p>
+                <p className="text-[10px] text-[hsl(var(--th-text-muted))]">Admin</p>
               </div>
             )}
           </div>
 
+          {/* Theme toggle */}
+          <ThemeToggle collapsed={collapsed} />
+
           {/* Collapse toggle */}
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className={`w-full flex items-center gap-2 rounded-md py-1.5 text-xs text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.04] transition-colors ${collapsed ? "justify-center px-0" : "px-2"
+            className={`w-full flex items-center gap-2 rounded-md py-1.5 text-xs text-[hsl(var(--th-text-muted))] hover:text-[hsl(var(--th-text-secondary))] hover:bg-[hsl(var(--th-surface-hover))] transition-colors ${collapsed ? "justify-center px-0" : "px-2"
               }`}
           >
             {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}

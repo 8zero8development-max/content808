@@ -53,12 +53,12 @@ export function Tooltip({ content, children, side = "right", delay = 200 }: Tool
 
   const transformOrigin =
     side === "right" ? "left center" :
-    side === "left" ? "right center" :
-    side === "top" ? "bottom center" : "top center";
+      side === "left" ? "right center" :
+        side === "top" ? "bottom center" : "top center";
 
   const translateClass =
     side === "right" || side === "left" ? "-translate-y-1/2" :
-    "-translate-x-1/2";
+      "-translate-x-1/2";
 
   return (
     <>
@@ -73,7 +73,7 @@ export function Tooltip({ content, children, side = "right", delay = 200 }: Tool
       </div>
       {visible && (
         <div
-          className={`fixed z-[100] px-2.5 py-1.5 text-xs font-medium text-zinc-200 bg-zinc-800 border border-zinc-700 rounded-md shadow-lg animate-scaleIn whitespace-nowrap ${translateClass}`}
+          className={`fixed z-[100] px-2.5 py-1.5 text-xs font-medium text-[hsl(var(--th-text))] bg-[hsl(var(--th-surface))] border border-[hsl(var(--th-border))] rounded-md shadow-lg animate-scaleIn whitespace-nowrap ${translateClass}`}
           style={{ top: coords.top, left: coords.left, transformOrigin }}
         >
           {content}

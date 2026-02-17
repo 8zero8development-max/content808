@@ -109,7 +109,7 @@ export function KanbanPage() {
       <FilterBar filters={filters} onChange={setFilters} />
 
       {loading ? (
-        <div className="flex items-center justify-center h-64 text-zinc-500">Loading...</div>
+        <div className="flex items-center justify-center h-64 text-[hsl(var(--th-text-muted))]">Loading...</div>
       ) : (
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
           <div className="flex gap-3 overflow-x-auto pb-4">

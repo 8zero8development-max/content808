@@ -39,17 +39,17 @@ export function ActivityPage() {
       .finally(() => setLoading(false));
   }, [toast]);
 
-  if (loading) return <div className="flex items-center justify-center h-64 text-zinc-500">Loading...</div>;
+  if (loading) return <div className="flex items-center justify-center h-64 text-[hsl(var(--th-text-muted))]">Loading...</div>;
 
   return (
     <div className="max-w-3xl mx-auto">
       <div className="mb-6">
         <h1 className="text-xl font-semibold">Activity Log</h1>
-        <p className="text-sm text-zinc-500 mt-1">Full audit trail of all content operations</p>
+        <p className="text-sm text-[hsl(var(--th-text-muted))] mt-1">Full audit trail of all content operations</p>
       </div>
 
       {entries.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-64 text-zinc-500">
+        <div className="flex flex-col items-center justify-center h-64 text-[hsl(var(--th-text-muted))]">
           <Activity className="h-12 w-12 mb-3 opacity-30" />
           <p>No activity yet.</p>
         </div>
@@ -57,21 +57,21 @@ export function ActivityPage() {
         <div className="space-y-1">
           {entries.map((entry) => {
             const Icon = ACTION_ICONS[entry.action] || Activity;
-            const color = ACTION_COLORS[entry.action] || "text-zinc-400 bg-zinc-800";
+            const color = ACTION_COLORS[entry.action] || "text-[hsl(var(--th-text-secondary))] bg-[hsl(var(--th-input))]";
             const details = entry.details as Record<string, unknown>;
 
             return (
-              <div key={entry.id} className="flex items-start gap-3 py-3 px-3 rounded-lg hover:bg-zinc-900/60 transition-colors">
+              <div key={entry.id} className="flex items-start gap-3 py-3 px-3 rounded-lg hover:bg-[hsl(var(--th-surface-hover))] transition-colors">
                 <div className={`mt-0.5 h-7 w-7 rounded-full flex items-center justify-center shrink-0 ${color}`}>
                   <Icon className="h-3.5 w-3.5" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-medium text-zinc-200">{entry.actor}</span>
-                    <span className="text-sm text-zinc-400">{entry.action}</span>
-                    <span className="text-xs text-zinc-600">{entry.entity_type}</span>
+                    <span className="text-sm font-medium text-[hsl(var(--th-text))]">{entry.actor}</span>
+                    <span className="text-sm text-[hsl(var(--th-text-secondary))]">{entry.action}</span>
+                    <span className="text-xs text-[hsl(var(--th-text-muted))]">{entry.entity_type}</span>
                     {details.from && details.to ? (
-                      <span className="text-xs text-zinc-500">
+                      <span className="text-xs text-[hsl(var(--th-text-muted))]">
                         {String(details.from)} → {String(details.to)}
                       </span>
                     ) : null}
@@ -80,10 +80,10 @@ export function ActivityPage() {
                     ) : null}
                   </div>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <span className="text-[11px] text-zinc-600">
+                    <span className="text-[11px] text-[hsl(var(--th-text-muted))]">
                       {format(new Date(entry.created_at), "MMM d, yyyy h:mm a")}
                     </span>
-                    <span className="text-[11px] text-zinc-700">{entry.actor_role}</span>
+                    <span className="text-[11px] text-[hsl(var(--th-text-muted))]">{entry.actor_role}</span>
                   </div>
                 </div>
               </div>

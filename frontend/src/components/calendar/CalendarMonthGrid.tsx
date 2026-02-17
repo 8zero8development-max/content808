@@ -46,11 +46,11 @@ export function CalendarMonthGrid({
         });
 
     return (
-        <div className="border border-zinc-800/50 rounded-xl overflow-hidden animate-fadeIn">
+        <div className="border border-[hsl(var(--th-border))] rounded-xl overflow-hidden animate-fadeIn">
             {/* Day headers */}
-            <div className="grid grid-cols-7 bg-zinc-900/50">
+            <div className="grid grid-cols-7 bg-[hsl(var(--th-surface))]">
                 {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((d) => (
-                    <div key={d} className="px-3 py-2.5 text-[11px] font-semibold text-zinc-500 uppercase tracking-wider text-center border-b border-zinc-800/40">
+                    <div key={d} className="px-3 py-2.5 text-[11px] font-semibold text-[hsl(var(--th-text-muted))] uppercase tracking-wider text-center border-b border-[hsl(var(--th-border))]">
                         {d.slice(0, 3)}
                     </div>
                 ))}
@@ -66,7 +66,7 @@ export function CalendarMonthGrid({
                         return (
                             <div
                                 key={di}
-                                className={`min-h-[110px] border-b border-r border-zinc-800/30 p-1.5 transition-colors duration-150 calendar-cell-hover ${inMonth ? "" : "opacity-30"
+                                className={`min-h-[110px] border-b border-r border-[hsl(var(--th-border)/0.4)] p-1.5 transition-colors duration-150 calendar-cell-hover ${inMonth ? "" : "opacity-30"
                                     } ${dragItem ? "hover:bg-indigo-500/[0.06]" : ""}`}
                                 onDragOver={(e) => e.preventDefault()}
                                 onDrop={() => onDrop(day)}
@@ -79,14 +79,14 @@ export function CalendarMonthGrid({
                                 <div className="flex items-center justify-between mb-1 px-0.5">
                                     <span
                                         className={`text-xs font-medium flex items-center justify-center ${isToday
-                                                ? "h-6 w-6 rounded-full bg-indigo-600 text-white"
-                                                : "text-zinc-500"
+                                            ? "h-6 w-6 rounded-full bg-indigo-600 text-white"
+                                            : "text-[hsl(var(--th-text-muted))]"
                                             }`}
                                     >
                                         {format(day, "d")}
                                     </span>
                                     {dayItems.length > 3 && (
-                                        <span className="text-[10px] text-zinc-600 font-medium">
+                                        <span className="text-[10px] text-[hsl(var(--th-text-muted))] font-medium">
                                             {dayItems.length}
                                         </span>
                                     )}
@@ -105,15 +105,15 @@ export function CalendarMonthGrid({
                                                 e.stopPropagation();
                                                 onItemClick(item, (e.currentTarget as HTMLElement).getBoundingClientRect());
                                             }}
-                                            className={`flex items-center gap-1.5 px-1 py-[3px] rounded-md border-l-2 ${STATUS_STRIP[item.status] || "border-l-zinc-500"} bg-zinc-800/70 hover:bg-zinc-700/70 cursor-grab active:cursor-grabbing calendar-item transition-colors`}
+                                            className={`flex items-center gap-1.5 px-1 py-[3px] rounded-md border-l-2 ${STATUS_STRIP[item.status] || "border-l-zinc-500"} bg-[hsl(var(--th-surface-hover))] hover:bg-[hsl(var(--th-input))] cursor-grab active:cursor-grabbing calendar-item transition-colors`}
                                         >
                                             <ProductThumbnail item={item} size="sm" />
                                             <div className="min-w-0 flex-1">
-                                                <div className="text-[10px] font-medium text-zinc-200 truncate">
+                                                <div className="text-[10px] font-medium text-[hsl(var(--th-text))] truncate">
                                                     {item.product_title || item.brand}
                                                 </div>
                                                 {item.platform && (
-                                                    <div className="text-[9px] text-zinc-500 uppercase">{item.platform}</div>
+                                                    <div className="text-[9px] text-[hsl(var(--th-text-muted))] uppercase">{item.platform}</div>
                                                 )}
                                             </div>
                                         </div>

@@ -18,7 +18,7 @@ interface StatusBadgeProps {
 }
 
 export function StatusBadge({ status, showLabel = true, size = "sm", className }: StatusBadgeProps) {
-    const config = STATUS_CONFIG[status] || { bg: "bg-zinc-800", text: "text-zinc-400", dot: "bg-zinc-500", glow: "" };
+    const config = STATUS_CONFIG[status] || { bg: "bg-[hsl(var(--th-input))]", text: "text-[hsl(var(--th-text-secondary))]", dot: "bg-[hsl(var(--th-text-muted))]", glow: "" };
     const dotSize = size === "sm" ? "h-1.5 w-1.5" : "h-2 w-2";
     const textSize = size === "sm" ? "text-[10px]" : "text-xs";
     const padding = size === "sm" ? "px-2 py-0.5" : "px-2.5 py-1";

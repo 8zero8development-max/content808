@@ -7,10 +7,10 @@ interface BadgeProps {
 }
 
 const variants: Record<string, string> = {
-  default: "bg-zinc-100 text-zinc-900",
-  secondary: "bg-zinc-800 text-zinc-100",
+  default: "bg-[hsl(var(--th-surface-hover))] text-[hsl(var(--th-text))]",
+  secondary: "bg-[hsl(var(--th-input))] text-[hsl(var(--th-text-secondary))]",
   destructive: "bg-red-600 text-white",
-  outline: "border border-zinc-600 text-zinc-300",
+  outline: "border border-[hsl(var(--th-border))] text-[hsl(var(--th-text-secondary))]",
 };
 
 export function Badge({ children, variant = "default", className }: BadgeProps) {
