@@ -16,6 +16,7 @@ import { CalendarWeekGrid } from "@/components/calendar/CalendarWeekGrid";
 import { CalendarDayView } from "@/components/calendar/CalendarDayView";
 import { CalendarAgendaView } from "@/components/calendar/CalendarAgendaView";
 import { CalendarEventPopover } from "@/components/calendar/CalendarEventPopover";
+import { CalendarFilterBar } from "@/components/calendar/CalendarFilterBar";
 import { CalendarSkeleton } from "@/components/calendar/CalendarSkeleton";
 
 type ViewMode = "month" | "week" | "day" | "agenda";
@@ -34,6 +35,10 @@ export function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<ViewMode>("month");
   const [dragItem, setDragItem] = useState<ContentItem | null>(null);
+  const [savingItemId, setSavingItemId] = useState<string | null>(null);
+
+  // Filters
+  const [filters, setFilters] = useState({ brand: "", platform: "", status: "", assignee: "" });
 
   // Popover state
   const [popover, setPopover] = useState<{ item: ContentItem; rect: DOMRect } | null>(null);
@@ -64,14 +69,24 @@ export function CalendarPage() {
         start = startOfWeek(startOfMonth(currentDate), { weekStartsOn: 0 });
         end = endOfWeek(endOfMonth(currentDate), { weekStartsOn: 0 });
       }
-      const data = await api.getCalendar({ start: start.toISOString(), end: end.toISOString() });
+
+      const params: Record<string, string> = {
+        start: start.toISOString(),
+        end: end.toISOString(),
+      };
+      if (filters.brand) params.brand = filters.brand;
+      if (filters.platform) params.platform = filters.platform;
+      if (filters.status) params.status = filters.status;
+      if (filters.assignee) params.assignee = filters.assignee;
+
+      const data = await api.getCalendar(params);
       setItems(data.items);
     } catch {
       toast("Failed to load calendar", "error");
     } finally {
       setLoading(false);
     }
-  }, [currentDate, view, toast]);
+  }, [currentDate, view, filters, toast]);
 
   useEffect(() => { fetchItems(); }, [fetchItems]);
 
@@ -102,30 +117,59 @@ export function CalendarPage() {
     }
   };
 
-  // Drag and drop
+  // ── Optimistic drag and drop ──
   const handleDrop = async (date: Date) => {
     if (!dragItem) return;
     const newDate = startOfDay(date).toISOString();
-    try {
-      await api.rescheduleItem(dragItem.id, { publish_date: newDate });
-      toast("Rescheduled", "success");
-      fetchItems();
-    } catch {
-      toast("Reschedule failed", "error");
-    }
+    const originalItems = [...items];
+    const movedItem = dragItem;
+
+    // Optimistic update — move card instantly
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === movedItem.id
+          ? { ...item, publish_date: newDate }
+          : item
+      )
+    );
+    setSavingItemId(movedItem.id);
     setDragItem(null);
+
+    try {
+      await api.rescheduleItem(movedItem.id, { publish_date: newDate });
+      toast("Rescheduled ✓", "success");
+    } catch {
+      // Revert on failure
+      setItems(originalItems);
+      toast("Reschedule failed — reverted", "error");
+    } finally {
+      setSavingItemId(null);
+    }
   };
 
   // Quick reschedule
   const handleQuickEdit = async () => {
     if (!editModal.item || !editModal.date) return;
+    const originalItems = [...items];
+    const newDate = new Date(editModal.date).toISOString();
+
+    // Optimistic
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === editModal.item!.id ? { ...item, publish_date: newDate } : item
+      )
+    );
+    setSavingItemId(editModal.item.id);
+    setEditModal({ open: false, item: null, date: "" });
+
     try {
-      await api.rescheduleItem(editModal.item.id, { publish_date: new Date(editModal.date).toISOString() });
-      toast("Schedule updated", "success");
-      setEditModal({ open: false, item: null, date: "" });
-      fetchItems();
+      await api.rescheduleItem(editModal.item!.id, { publish_date: newDate });
+      toast("Schedule updated ✓", "success");
     } catch {
-      toast("Update failed", "error");
+      setItems(originalItems);
+      toast("Update failed — reverted", "error");
+    } finally {
+      setSavingItemId(null);
     }
   };
 
@@ -142,7 +186,7 @@ export function CalendarPage() {
   return (
     <div className="animate-fadeIn">
       {/* ── Top Bar ── */}
-      <div className="flex items-center justify-between mb-5">
+      <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-bold bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent">
             Calendar
@@ -163,8 +207,8 @@ export function CalendarPage() {
                 key={id}
                 onClick={() => setView(id)}
                 className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium transition-all duration-200 ${view === id
-                    ? "bg-gradient-to-r from-indigo-600/30 to-cyan-600/20 text-white"
-                    : "text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.04]"
+                  ? "bg-gradient-to-r from-indigo-600/30 to-cyan-600/20 text-white"
+                  : "text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.04]"
                   }`}
               >
                 <Icon className="h-3.5 w-3.5" />
@@ -195,6 +239,9 @@ export function CalendarPage() {
         </div>
       </div>
 
+      {/* ── Filter Bar ── */}
+      <CalendarFilterBar filters={filters} onChange={setFilters} />
+
       {/* ── Main Content ── */}
       <div className="flex gap-5">
         {/* Sidebar */}
@@ -202,9 +249,6 @@ export function CalendarPage() {
           currentDate={currentDate}
           onDateSelect={(date) => {
             setCurrentDate(date);
-            if (view === "month" || view === "agenda") {
-              // stay in current view
-            }
           }}
           items={items}
         />
@@ -256,6 +300,14 @@ export function CalendarPage() {
               )}
             </>
           )}
+
+          {/* Saving indicator (subtle) */}
+          {savingItemId && (
+            <div className="fixed bottom-6 right-6 flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-900/90 border border-zinc-700/50 text-xs text-zinc-400 shadow-xl backdrop-blur-sm animate-fadeIn z-50">
+              <div className="h-3 w-3 rounded-full border-2 border-indigo-400 border-t-transparent animate-spin" />
+              Saving...
+            </div>
+          )}
         </div>
       </div>
 
@@ -277,7 +329,7 @@ export function CalendarPage() {
         <DialogContent>
           <DialogClose onClick={() => setEditModal({ open: false, item: null, date: "" })} />
           <DialogHeader>
-            <DialogTitle>Reschedule: {editModal.item?.brand}</DialogTitle>
+            <DialogTitle>Reschedule: {editModal.item?.product_title || editModal.item?.brand}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>

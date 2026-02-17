@@ -5,7 +5,7 @@ const router = Router();
 
 router.get('/calendar', async (req: Request, res: Response) => {
   try {
-    const { start, end, platform, status, assignee } = req.query;
+    const { start, end, platform, status, assignee, brand } = req.query;
 
     let sql = `SELECT * FROM content_items WHERE (publish_date IS NOT NULL OR due_date IS NOT NULL)`;
     const params: unknown[] = [];
@@ -32,6 +32,10 @@ router.get('/calendar', async (req: Request, res: Response) => {
     if (assignee) {
       sql += ` AND assignee = $${idx++}`;
       params.push(assignee);
+    }
+    if (brand) {
+      sql += ` AND brand ILIKE $${idx++}`;
+      params.push(`%${brand}%`);
     }
 
     sql += ' ORDER BY COALESCE(publish_date, due_date) ASC';

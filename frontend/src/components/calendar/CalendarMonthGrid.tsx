@@ -1,12 +1,13 @@
 import { ContentItem } from "@/api/client";
+import { ProductThumbnail } from "@/components/calendar/ProductThumbnail";
 import {
     format, startOfMonth, startOfWeek, endOfWeek, endOfMonth,
     addDays, isSameMonth, isSameDay, parseISO
 } from "date-fns";
 
-const STATUS_BG: Record<string, string> = {
-    idea: "bg-indigo-500", draft: "bg-violet-500", review: "bg-amber-500",
-    approved: "bg-emerald-500", blocked: "bg-red-500", scheduled: "bg-blue-500", published: "bg-cyan-500",
+const STATUS_STRIP: Record<string, string> = {
+    idea: "border-l-indigo-500", draft: "border-l-violet-500", review: "border-l-amber-500",
+    approved: "border-l-emerald-500", blocked: "border-l-red-500", scheduled: "border-l-blue-500", published: "border-l-cyan-500",
 };
 
 interface CalendarMonthGridProps {
@@ -75,23 +76,23 @@ export function CalendarMonthGrid({
                                 }}
                             >
                                 {/* Date number */}
-                                <div className="flex items-center justify-between mb-1 px-1">
+                                <div className="flex items-center justify-between mb-1 px-0.5">
                                     <span
                                         className={`text-xs font-medium flex items-center justify-center ${isToday
-                                            ? "h-6 w-6 rounded-full bg-indigo-600 text-white"
-                                            : "text-zinc-500"
+                                                ? "h-6 w-6 rounded-full bg-indigo-600 text-white"
+                                                : "text-zinc-500"
                                             }`}
                                     >
                                         {format(day, "d")}
                                     </span>
                                     {dayItems.length > 3 && (
                                         <span className="text-[10px] text-zinc-600 font-medium">
-                                            {dayItems.length} items
+                                            {dayItems.length}
                                         </span>
                                     )}
                                 </div>
 
-                                {/* Items */}
+                                {/* Product-first items */}
                                 <div className="space-y-0.5">
                                     {dayItems.slice(0, 3).map((item) => (
                                         <div
@@ -104,17 +105,22 @@ export function CalendarMonthGrid({
                                                 e.stopPropagation();
                                                 onItemClick(item, (e.currentTarget as HTMLElement).getBoundingClientRect());
                                             }}
-                                            className={`${STATUS_BG[item.status] || "bg-zinc-600"} text-white text-[10px] px-2 py-[3px] rounded-md truncate cursor-grab active:cursor-grabbing calendar-item flex items-center gap-1`}
+                                            className={`flex items-center gap-1.5 px-1 py-[3px] rounded-md border-l-2 ${STATUS_STRIP[item.status] || "border-l-zinc-500"} bg-zinc-800/70 hover:bg-zinc-700/70 cursor-grab active:cursor-grabbing calendar-item transition-colors`}
                                         >
-                                            <span className="truncate font-medium">{item.brand}</span>
-                                            {item.platform && (
-                                                <span className="text-white/50 text-[9px] shrink-0">· {item.platform}</span>
-                                            )}
+                                            <ProductThumbnail item={item} size="sm" />
+                                            <div className="min-w-0 flex-1">
+                                                <div className="text-[10px] font-medium text-zinc-200 truncate">
+                                                    {item.product_title || item.brand}
+                                                </div>
+                                                {item.platform && (
+                                                    <div className="text-[9px] text-zinc-500 uppercase">{item.platform}</div>
+                                                )}
+                                            </div>
                                         </div>
                                     ))}
                                     {dayItems.length > 3 && (
                                         <button
-                                            className="text-[10px] text-indigo-400 hover:text-indigo-300 px-2 font-medium transition-colors"
+                                            className="text-[10px] text-indigo-400 hover:text-indigo-300 px-1.5 font-medium transition-colors"
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 onCellClick(day);

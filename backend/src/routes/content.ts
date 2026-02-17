@@ -80,6 +80,8 @@ router.post(
     body('brand').notEmpty().trim(),
     body('platform').optional().trim(),
     body('product_url').optional().trim(),
+    body('product_title').optional().trim(),
+    body('product_image_url').optional().trim(),
     body('campaign_goal').optional().trim(),
     body('direction').optional().trim(),
     body('pivot_notes').optional().trim(),
@@ -92,15 +94,16 @@ router.post(
     try {
       const id = uuidv4();
       const {
-        brand, product_url = '', campaign_goal = '', direction = '',
+        brand, product_url = '', product_title = '', product_image_url = '',
+        campaign_goal = '', direction = '',
         pivot_notes = '', platform = '', due_date = null,
         publish_date = null, assignee = null
       } = req.body;
 
       await query(
-        `INSERT INTO content_items (id, brand, product_url, campaign_goal, direction, pivot_notes, platform, status, due_date, publish_date, assignee, created_by)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,'idea',$8,$9,$10,$11)`,
-        [id, brand, product_url, campaign_goal, direction, pivot_notes, platform, due_date, publish_date, assignee, req.user!.id]
+        `INSERT INTO content_items (id, brand, product_url, product_title, product_image_url, campaign_goal, direction, pivot_notes, platform, status, due_date, publish_date, assignee, created_by)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,'idea',$10,$11,$12,$13)`,
+        [id, brand, product_url, product_title, product_image_url, campaign_goal, direction, pivot_notes, platform, due_date, publish_date, assignee, req.user!.id]
       );
 
       await logAudit({
@@ -128,6 +131,8 @@ router.put(
     body('brand').optional().trim(),
     body('platform').optional().trim(),
     body('product_url').optional().trim(),
+    body('product_title').optional().trim(),
+    body('product_image_url').optional().trim(),
     body('campaign_goal').optional().trim(),
     body('direction').optional().trim(),
     body('pivot_notes').optional().trim(),
@@ -143,7 +148,7 @@ router.put(
         return res.status(404).json({ error: 'Item not found' });
       }
 
-      const fields = ['brand', 'product_url', 'campaign_goal', 'direction', 'pivot_notes', 'platform', 'due_date', 'publish_date', 'assignee'];
+      const fields = ['brand', 'product_url', 'product_title', 'product_image_url', 'campaign_goal', 'direction', 'pivot_notes', 'platform', 'due_date', 'publish_date', 'assignee'];
       const updates: string[] = [];
       const values: unknown[] = [];
       let idx = 1;
