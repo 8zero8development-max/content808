@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import { config } from './config';
 import { authMiddleware } from './middleware/auth';
 import { runMigrations } from './db/migrate';
+import { startAgentWorker } from './worker/agent';
 import healthRouter from './routes/health';
 import contentRouter from './routes/content';
 import approvalsRouter from './routes/approvals';
@@ -33,6 +34,8 @@ async function start() {
   console.log('Running migrations...');
   await runMigrations();
   console.log('Migrations complete.');
+
+  startAgentWorker();
 
   app.listen(config.port, '0.0.0.0', () => {
     console.log(`Content Hub v2 API running on port ${config.port}`);

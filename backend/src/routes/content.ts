@@ -304,4 +304,29 @@ router.get('/stats', async (_req: Request, res: Response) => {
   }
 });
 
+// ── Agent Fill ──
+router.post(
+  '/items/:id/agent-fill',
+  [param('id').isUUID()],
+  async (req: Request, res: Response) => {
+    if (!handleValidation(req, res)) return;
+    try {
+      const existing = await query('SELECT id FROM content_items WHERE id = $1', [req.params.id]);
+      if (existing.rows.length === 0) {
+        return res.status(404).json({ error: 'Item not found' });
+      }
+
+      const { Queue } = await import('bullmq');
+      const { redisConnection } = await import('../db/redis');
+      const agentQueue = new Queue('agent-fill', { connection: redisConnection });
+      await agentQueue.add('fill', { itemId: req.params.id });
+
+      res.status(202).json({ message: 'Agent fill job queued', itemId: req.params.id });
+    } catch (err) {
+      console.error('Error queuing agent fill:', err);
+      res.status(500).json({ error: 'Failed to queue agent fill' });
+    }
+  }
+);
+
 export default router;
