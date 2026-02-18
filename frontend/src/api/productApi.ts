@@ -2,9 +2,25 @@ const BASE = '/product-api/api/v1';
 
 /* ── Types ── */
 
+/**
+ * Product Intel may emit specs as:
+ *   { name, terms: string[] }   — multi-value spec
+ *   { name, value: string }     — single-value spec
+ */
 export interface TechnicalSpec {
     name: string;
-    terms: string[];
+    terms?: string[];
+    value?: string;
+}
+
+/**
+ * Product Intel may emit angles as:
+ *   string                      — plain text
+ *   { title, content }          — structured angle
+ */
+export interface MarketingAngle {
+    title: string;
+    content: string;
 }
 
 export interface Product {
@@ -20,7 +36,7 @@ export interface Product {
     thumbnail: string | null;
     dna_confidence: string | null;
     features: string[];
-    marketing_angles: string[];
+    marketing_angles: (string | MarketingAngle)[];
     technical_specs: TechnicalSpec[];
 }
 

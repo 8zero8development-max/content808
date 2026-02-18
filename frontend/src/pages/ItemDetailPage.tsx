@@ -398,12 +398,26 @@ function ProductPanel({ product }: { product: Product }) {
           onToggle={() => toggle("marketing")}
         >
           <ul className="space-y-1">
-            {(product.marketing_angles || []).map((a, i) => (
-              <li key={i} className="text-sm text-[hsl(var(--th-text-secondary))] flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-violet-400 shrink-0" />
-                {a}
-              </li>
-            ))}
+            {(product.marketing_angles || []).map((a, i) => {
+              /* Handle both plain strings and { title, content } objects */
+              if (typeof a === "string") {
+                return (
+                  <li key={i} className="text-sm text-[hsl(var(--th-text-secondary))] flex items-start gap-2">
+                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-violet-400 shrink-0" />
+                    {a}
+                  </li>
+                );
+              }
+              return (
+                <li key={i} className="text-sm text-[hsl(var(--th-text-secondary))] flex items-start gap-2">
+                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-violet-400 shrink-0" />
+                  <span>
+                    {a.title && <span className="font-medium text-[hsl(var(--th-text))]">{a.title}: </span>}
+                    {a.content}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         </CollapsibleSection>
       )}
@@ -416,19 +430,30 @@ function ProductPanel({ product }: { product: Product }) {
           onToggle={() => toggle("specs")}
         >
           <div className="space-y-3">
-            {(product.technical_specs || []).map((spec, i) => (
-              <div key={i}>
-                <div className="text-sm font-medium text-[hsl(var(--th-text))] mb-1">{spec.name}</div>
-                <ul className="space-y-0.5 pl-3">
-                  {(spec.terms || []).map((term, j) => (
-                    <li key={j} className="text-sm text-[hsl(var(--th-text-secondary))] flex items-start gap-2">
-                      <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0" />
-                      {term}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {(product.technical_specs || []).map((spec, i) => {
+              /* Normalise: prefer terms[], fall back to splitting value string */
+              const items: string[] = Array.isArray(spec.terms) && spec.terms.length > 0
+                ? spec.terms
+                : spec.value
+                  ? [spec.value]
+                  : [];
+
+              if (items.length === 0) return null;
+
+              return (
+                <div key={i}>
+                  <div className="text-sm font-medium text-[hsl(var(--th-text))] mb-1">{spec.name}</div>
+                  <ul className="space-y-0.5 pl-3">
+                    {items.map((term, j) => (
+                      <li key={j} className="text-sm text-[hsl(var(--th-text-secondary))] flex items-start gap-2">
+                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0" />
+                        {term}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
           </div>
         </CollapsibleSection>
       )}
