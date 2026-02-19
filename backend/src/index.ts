@@ -13,6 +13,11 @@ import calendarRouter from './routes/calendar';
 import commentsRouter from './routes/comments';
 import pluginsRouter from './routes/plugins';
 import auditRouter from './routes/audit';
+import metaAuthRouter from './routes/meta-auth';
+import socialAccountsRouter from './routes/social-accounts';
+import socialPostsRouter from './routes/social-posts';
+import mediaLibraryRouter from './routes/media-library';
+import socialAnalyticsRouter from './routes/social-analytics';
 
 const app = express();
 
@@ -29,6 +34,11 @@ app.use('/api/v1/content-hub', authMiddleware, calendarRouter);
 app.use('/api/v1/content-hub', authMiddleware, commentsRouter);
 app.use('/api/v1/content-hub', authMiddleware, pluginsRouter);
 app.use('/api/v1/content-hub', authMiddleware, auditRouter);
+app.use('/api/v1/content-hub', authMiddleware, metaAuthRouter);
+app.use('/api/v1/content-hub', authMiddleware, socialAccountsRouter);
+app.use('/api/v1/content-hub', authMiddleware, socialPostsRouter);
+app.use('/api/v1/content-hub', authMiddleware, mediaLibraryRouter);
+app.use('/api/v1/content-hub', authMiddleware, socialAnalyticsRouter);
 
 async function start() {
   console.log('Running migrations...');

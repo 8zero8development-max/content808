@@ -18,4 +18,18 @@ export const config = {
   cors: {
     origin: process.env.CORS_ORIGIN || '*',
   },
+  meta: {
+    appId: process.env.META_APP_ID || '',
+    appSecret: process.env.META_APP_SECRET || '',
+    callbackUrl: process.env.META_CALLBACK_URL || 'http://localhost:4000/api/v1/content-hub/meta/callback',
+    graphApiVersion: process.env.META_GRAPH_API_VERSION || 'v21.0',
+  },
+  session: {
+    secret: process.env.SESSION_SECRET || 'content-hub-session-secret',
+  },
+  storage: {
+    baseUrl: process.env.STORAGE_BASE_URL || '/uploads',
+    uploadDir: process.env.UPLOAD_DIR || './uploads',
+  },
+  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
 };

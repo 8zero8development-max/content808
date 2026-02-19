@@ -8,6 +8,7 @@ import {
 const STATUS_STRIP: Record<string, string> = {
     idea: "border-l-indigo-500", draft: "border-l-violet-500", review: "border-l-amber-500",
     approved: "border-l-emerald-500", blocked: "border-l-red-500", scheduled: "border-l-blue-500", published: "border-l-cyan-500",
+    publishing: "border-l-amber-400", failed: "border-l-red-500",
 };
 
 interface CalendarMonthGridProps {
@@ -112,9 +113,14 @@ export function CalendarMonthGrid({
                                                 <div className="text-[10px] font-medium text-[hsl(var(--th-text))] truncate">
                                                     {item.product_title || item.brand}
                                                 </div>
-                                                {item.platform && (
-                                                    <div className="text-[9px] text-[hsl(var(--th-text-muted))] uppercase">{item.platform}</div>
-                                                )}
+                                                <div className="flex items-center gap-1">
+                                                    {item.platform && (
+                                                        <span className="text-[9px] text-[hsl(var(--th-text-muted))] uppercase">{item.platform}</span>
+                                                    )}
+                                                    {(item as Record<string, unknown>).item_type === 'social_post' && (
+                                                        <span className="inline-flex h-3 w-3 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500" title="Social Post" />
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     ))}

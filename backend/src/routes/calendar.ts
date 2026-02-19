@@ -41,7 +41,60 @@ router.get('/calendar', async (req: Request, res: Response) => {
 
     sql += ' ORDER BY COALESCE(publish_date, due_date) ASC';
     const result = await query(sql, params);
-    res.json({ items: result.rows });
+
+    // Also fetch social posts for the calendar
+    let socialSql = `SELECT sp.id, sp.caption as brand, '' as product_url, sp.post_type as campaign_goal,
+           '' as direction, '' as pivot_notes,
+           CASE WHEN EXISTS (SELECT 1 FROM social_post_accounts spa JOIN social_accounts sa ON spa.social_account_id = sa.id WHERE spa.social_post_id = sp.id AND sa.account_type = 'instagram_business') THEN 'instagram'
+                WHEN EXISTS (SELECT 1 FROM social_post_accounts spa JOIN social_accounts sa ON spa.social_account_id = sa.id WHERE spa.social_post_id = sp.id AND sa.account_type = 'facebook_page') THEN 'facebook'
+                ELSE 'facebook' END as platform,
+           sp.status, NULL as due_date, sp.scheduled_at as publish_date,
+           sp.user_id as assignee, sp.user_id as created_by, sp.created_at, sp.updated_at,
+           '' as product_title, '' as product_image_url, NULL as product_id, sp.caption as final_copy,
+           'social_post' as item_type, sp.post_type, sp.hashtags
+    FROM social_posts sp WHERE sp.scheduled_at IS NOT NULL`;
+    const socialParams: unknown[] = [];
+    let sIdx = 1;
+
+    if (start) {
+      socialSql += ` AND sp.scheduled_at >= $${sIdx++}`;
+      socialParams.push(start);
+    }
+    if (end) {
+      socialSql += ` AND sp.scheduled_at <= $${sIdx++}`;
+      socialParams.push(end);
+    }
+    if (platform) {
+      if (platform === 'instagram') {
+        socialSql += ` AND EXISTS (SELECT 1 FROM social_post_accounts spa JOIN social_accounts sa ON spa.social_account_id = sa.id WHERE spa.social_post_id = sp.id AND sa.account_type = 'instagram_business')`;
+      } else if (platform === 'facebook') {
+        socialSql += ` AND EXISTS (SELECT 1 FROM social_post_accounts spa JOIN social_accounts sa ON spa.social_account_id = sa.id WHERE spa.social_post_id = sp.id AND sa.account_type = 'facebook_page')`;
+      }
+    }
+    if (status) {
+      socialSql += ` AND sp.status = $${sIdx++}`;
+      socialParams.push(status);
+    }
+
+    socialSql += ' ORDER BY sp.scheduled_at ASC';
+
+    let socialPosts: unknown[] = [];
+    try {
+      const socialResult = await query(socialSql, socialParams);
+      socialPosts = socialResult.rows.map((row: Record<string, unknown>) => ({ ...row, item_type: 'social_post' }));
+    } catch {
+      // social tables may not exist yet
+    }
+
+    const contentItems = result.rows.map((row: Record<string, unknown>) => ({ ...row, item_type: 'content_item' }));
+    const allItems = [...contentItems, ...socialPosts] as Record<string, unknown>[];
+    allItems.sort((a, b) => {
+      const dateA = (a.publish_date || a.due_date) as string;
+      const dateB = (b.publish_date || b.due_date) as string;
+      return new Date(dateA).getTime() - new Date(dateB).getTime();
+    });
+
+    res.json({ items: allItems });
   } catch (err) {
     console.error('Error fetching calendar items:', err);
     res.status(500).json({ error: 'Failed to fetch calendar items' });
