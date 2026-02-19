@@ -8,6 +8,11 @@ import { ApprovalsPage } from "@/pages/ApprovalsPage";
 import { ItemDetailPage } from "@/pages/ItemDetailPage";
 import { ActivityPage } from "@/pages/ActivityPage";
 import { SettingsPage } from "@/pages/SettingsPage";
+import { SocialAccountsPage } from "@/pages/SocialAccountsPage";
+import { PostComposerPage } from "@/pages/PostComposerPage";
+import { PostQueuePage } from "@/pages/PostQueuePage";
+import { MediaLibraryPage } from "@/pages/MediaLibraryPage";
+import { SocialAnalyticsPage } from "@/pages/SocialAnalyticsPage";
 
 function App() {
   return (
@@ -22,6 +27,11 @@ function App() {
               <Route path="/item/:id" element={<ItemDetailPage />} />
               <Route path="/activity" element={<ActivityPage />} />
               <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/social/accounts" element={<SocialAccountsPage />} />
+              <Route path="/social/compose" element={<PostComposerPage />} />
+              <Route path="/social/queue" element={<PostQueuePage />} />
+              <Route path="/social/media" element={<MediaLibraryPage />} />
+              <Route path="/social/analytics" element={<SocialAnalyticsPage />} />
             </Routes>
           </Layout>
         </BrowserRouter>
