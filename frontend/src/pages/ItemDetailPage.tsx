@@ -468,6 +468,18 @@ function ProductPanel({ product }: { product: Product }) {
         >
           <div className="space-y-3">
             {(product.technical_specs || []).map((spec, i) => {
+              /* Handle both string and TechnicalSpec formats */
+              if (typeof spec === 'string') {
+                return (
+                  <div key={i}>
+                    <div className="text-sm text-[hsl(var(--th-text-secondary))] flex items-start gap-2">
+                      <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0" />
+                      {spec}
+                    </div>
+                  </div>
+                );
+              }
+
               /* Normalise: prefer terms[], fall back to splitting value string */
               const items: string[] = Array.isArray(spec.terms) && spec.terms.length > 0
                 ? spec.terms

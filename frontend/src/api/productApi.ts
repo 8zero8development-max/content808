@@ -29,15 +29,27 @@ export interface Product {
     brand: string;
     category: string;
     selling_price: string | null;
-    rrp_price: string | null;
-    currency: string;
-    price_source: string | null;
-    source_url: string | null;
-    thumbnail: string | null;
-    dna_confidence: string | null;
+    price_point: string | null;
+    description: string | null;
+    usp: string | null;
+    visual_style: string | null;
+
     features: string[];
+    benefits: string[];
+    pain_points: string[];
+    target_audience: string[];
     marketing_angles: (string | MarketingAngle)[];
-    technical_specs: TechnicalSpec[];
+    competitors: string[];
+
+    technical_specs: (string | TechnicalSpec)[];
+    annual_energy_consumption: string | null;
+
+    thumbnail: string | null;
+    source_url: string | null;
+
+    infographic_prompt: string | null;
+    infographic_url: string | null;
+    infographic_status: string | null;
 }
 
 export interface ProductSearchParams {

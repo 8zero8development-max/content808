@@ -24,6 +24,8 @@ services:
       DB_USER: ${DB_USER:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-}
       DB_SSL: ${DB_SSL:-false}
+      SUPABASE_URL: ${SUPABASE_URL:-http://localhost:8000}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-}
       REDIS_HOST: redis
       REDIS_PORT: "6379"
       CORS_ORIGIN: "*"
@@ -41,7 +43,6 @@ services:
       args:
         VITE_API_URL: http://localhost:4000
     environment:
-      PRODUCT_API_URL: http://192.168.1.137:54100
       BACKEND_API_URL: http://backend:4000
     ports:
       - "3000:80"

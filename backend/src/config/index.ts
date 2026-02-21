@@ -32,5 +32,9 @@ export const config = {
     baseUrl: process.env.STORAGE_BASE_URL || '/uploads',
     uploadDir: process.env.UPLOAD_DIR || './uploads',
   },
+  supabase: {
+    url: process.env.SUPABASE_URL || 'http://localhost:8000',
+    anonKey: process.env.SUPABASE_ANON_KEY || '',
+  },
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
 };
