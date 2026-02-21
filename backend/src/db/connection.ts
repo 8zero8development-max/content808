@@ -10,6 +10,7 @@ export const pool = new Pool({
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 5000,
+  ssl: config.db.ssl ? { rejectUnauthorized: false } : false,
 });
 
 pool.on('error', (err) => {
