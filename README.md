@@ -9,7 +9,7 @@ content808/
 ├── backend/          # Node.js + Express + TypeScript API
 │   ├── src/
 │   │   ├── config/       # Environment configuration
-│   │   ├── db/           # Postgres connection + migrations
+│   │   ├── db/           # Supabase/Postgres connection + migrations
 │   │   ├── middleware/    # Auth + RBAC middleware
 │   │   ├── routes/       # API route handlers
 │   │   ├── services/     # Business logic (transitions, audit)
@@ -33,7 +33,7 @@ content808/
 |-----------|-----------------------------------------|
 | Frontend  | React 18, Vite, TypeScript, Tailwind CSS |
 | Backend   | Node.js 20, Express, TypeScript          |
-| Database  | PostgreSQL 16                            |
+| Database  | Supabase (PostgreSQL)                     |
 | Queue     | Redis 7 + BullMQ                         |
 | Deploy    | Docker Compose                           |
 
@@ -51,10 +51,23 @@ content808/
 
 - Node.js 20+
 - Docker & Docker Compose
-- PostgreSQL 16 (or use Docker)
+- Supabase instance (local or hosted) with PostgreSQL connection details
 
 ### Quick Start with Docker
 
+1. Copy and configure your environment variables:
+```bash
+cp backend/.env.example backend/.env
+# Edit backend/.env with your Supabase connection details:
+#   DB_HOST=<your-supabase-host>
+#   DB_PORT=5432
+#   DB_NAME=postgres
+#   DB_USER=postgres
+#   DB_PASSWORD=<your-supabase-password>
+#   DB_SSL=false  # set to true for remote Supabase instances
+```
+
+2. Start the services:
 ```bash
 docker compose up -d --build
 ```
@@ -64,6 +77,8 @@ Services:
 - Backend API: http://localhost:4000
 - Health: http://localhost:4000/health
 - Ready: http://localhost:4000/ready
+
+> **Note:** PostgreSQL is no longer bundled in Docker Compose. The backend connects to your external Supabase instance. Redis still runs in Docker.
 
 ### Manual Development
 
@@ -109,6 +124,7 @@ See [TESTING.md](TESTING.md) for smoke test and e2e verification procedures.
 - Comprehensive audit logging for all operations
 - Plugin/extension registry with enable/disable
 - KPI dashboard strip with real-time stats
-- Docker Compose deployment with health checks
+- Supabase (PostgreSQL) as managed database
+- Docker Compose deployment with health checks (Redis only)
 - GitHub Actions CI/CD pipeline
 - Versioned REST API under /api/v1/content-hub

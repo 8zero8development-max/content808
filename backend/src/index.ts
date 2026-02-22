@@ -18,6 +18,7 @@ import socialAccountsRouter from './routes/social-accounts';
 import socialPostsRouter from './routes/social-posts';
 import mediaLibraryRouter from './routes/media-library';
 import socialAnalyticsRouter from './routes/social-analytics';
+import productsRouter from './routes/products';
 
 const app = express();
 
@@ -39,6 +40,9 @@ app.use('/api/v1/content-hub', authMiddleware, socialAccountsRouter);
 app.use('/api/v1/content-hub', authMiddleware, socialPostsRouter);
 app.use('/api/v1/content-hub', authMiddleware, mediaLibraryRouter);
 app.use('/api/v1/content-hub', authMiddleware, socialAnalyticsRouter);
+
+// Product API routes (Supabase-backed, no auth middleware — public product data)
+app.use('/product-api/api/v1', productsRouter);
 
 async function start() {
   console.log('Running migrations...');

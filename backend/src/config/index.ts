@@ -5,11 +5,12 @@ export const config = {
   port: parseInt(process.env.PORT || '4000', 10),
   nodeEnv: process.env.NODE_ENV || 'development',
   db: {
-    host: process.env.DB_HOST || 'postgres',
+    host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT || '5432', 10),
-    database: process.env.DB_NAME || 'content_hub',
-    user: process.env.DB_USER || 'content_hub',
-    password: process.env.DB_PASSWORD || 'content_hub_pass',
+    database: process.env.DB_NAME || 'postgres',
+    user: process.env.DB_USER || 'postgres',
+    password: process.env.DB_PASSWORD || '',
+    ssl: process.env.DB_SSL === 'true',
   },
   redis: {
     host: process.env.REDIS_HOST || 'redis',
@@ -30,6 +31,10 @@ export const config = {
   storage: {
     baseUrl: process.env.STORAGE_BASE_URL || '/uploads',
     uploadDir: process.env.UPLOAD_DIR || './uploads',
+  },
+  supabase: {
+    url: process.env.SUPABASE_URL || 'http://localhost:8000',
+    anonKey: process.env.SUPABASE_ANON_KEY || '',
   },
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
 };

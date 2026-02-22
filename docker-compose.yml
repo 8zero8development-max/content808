@@ -1,22 +1,6 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_DB: content_hub
-      POSTGRES_USER: content_hub
-      POSTGRES_PASSWORD: content_hub_pass
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U content_hub"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
   redis:
     image: redis:7-alpine
     ports:
@@ -34,19 +18,20 @@ services:
     environment:
       PORT: "4000"
       NODE_ENV: production
-      DB_HOST: postgres
-      DB_PORT: "5432"
-      DB_NAME: content_hub
-      DB_USER: content_hub
-      DB_PASSWORD: content_hub_pass
+      DB_HOST: ${DB_HOST:-supabase-db}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-postgres}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-}
+      DB_SSL: ${DB_SSL:-false}
+      SUPABASE_URL: ${SUPABASE_URL:-http://localhost:8000}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-}
       REDIS_HOST: redis
       REDIS_PORT: "6379"
       CORS_ORIGIN: "*"
     ports:
-      - "4000:4000"
+      - "54000:4000"
     depends_on:
-      postgres:
-        condition: service_healthy
       redis:
         condition: service_healthy
     restart: unless-stopped
@@ -56,15 +41,11 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        VITE_API_URL: http://localhost:4000
+        VITE_API_URL: http://localhost:3000
     environment:
-      PRODUCT_API_URL: http://192.168.1.137:54100
       BACKEND_API_URL: http://backend:4000
     ports:
       - "3000:80"
     depends_on:
       - backend
     restart: unless-stopped
-
-volumes:
-  pgdata:
