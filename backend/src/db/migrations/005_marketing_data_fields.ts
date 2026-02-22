@@ -3,13 +3,19 @@ import { Pool } from 'pg';
 export const id = '005_marketing_data_fields';
 
 export async function up(pool: Pool): Promise<void> {
-    // Step 1: Normalise empty strings to NULL so the JSONB cast is clean.
+    // Step 1: Drop NOT NULL constraint so empty strings can become NULL.
+    await pool.query(`
+    ALTER TABLE content_items ALTER COLUMN campaign_goal DROP NOT NULL;
+    ALTER TABLE content_items ALTER COLUMN direction     DROP NOT NULL;
+  `);
+
+    // Step 2: Normalise empty strings to NULL so the JSONB cast is clean.
     await pool.query(`
     UPDATE content_items SET campaign_goal = NULL WHERE campaign_goal = '';
     UPDATE content_items SET direction     = NULL WHERE direction     = '';
   `);
 
-    // Step 2: Convert TEXT columns to JSONB.
+    // Step 3: Convert TEXT columns to JSONB.
     // to_jsonb(text) wraps the value as a JSON string (e.g. "my goal"),
     // which the frontend already handles as a legacy string format.
     await pool.query(`
