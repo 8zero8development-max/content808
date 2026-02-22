@@ -85,8 +85,10 @@ export interface ContentItem {
   product_title: string;
   product_image_url: string;
   product_id: string | null;
-  campaign_goal: string;
-  direction: string;
+  /** @deprecated kept for search backward compat */
+  campaign_goal: string | { title: string; content: string } | null;
+  direction: string | { benefits: string[]; pain_points: string[] } | null;
+  target_audience: string[] | null;
   pivot_notes: string;
   platform: string;
   status: string;
