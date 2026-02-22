@@ -90,8 +90,9 @@ router.post(
     body('product_url').optional().trim(),
     body('product_title').optional().trim(),
     body('product_image_url').optional().trim(),
-    body('campaign_goal').optional().trim(),
-    body('direction').optional().trim(),
+    body('campaign_goal').optional(),
+    body('direction').optional(),
+    body('target_audience').optional(),
     body('pivot_notes').optional().trim(),
     body('due_date').optional({ nullable: true }).isISO8601(),
     body('publish_date').optional({ nullable: true }).isISO8601(),
@@ -103,15 +104,21 @@ router.post(
       const id = uuidv4();
       const {
         brand, product_url = '', product_title = '', product_image_url = '',
-        campaign_goal = '', direction = '',
+        product_id = null,
+        campaign_goal = null, direction = null, target_audience = null,
         pivot_notes = '', platform = '', due_date = null,
         publish_date = null, assignee = null
       } = req.body;
 
+      // Ensure JSON fields are stored as JSON
+      const campaignGoalJson = campaign_goal && typeof campaign_goal === 'object' ? JSON.stringify(campaign_goal) : campaign_goal;
+      const directionJson = direction && typeof direction === 'object' ? JSON.stringify(direction) : direction;
+      const targetAudienceJson = target_audience && typeof target_audience === 'object' ? JSON.stringify(target_audience) : target_audience;
+
       await query(
-        `INSERT INTO content_items (id, brand, product_url, product_title, product_image_url, campaign_goal, direction, pivot_notes, platform, status, due_date, publish_date, assignee, created_by)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,'idea',$10,$11,$12,$13)`,
-        [id, brand, product_url, product_title, product_image_url, campaign_goal, direction, pivot_notes, platform, due_date, publish_date, assignee, req.user!.id]
+        `INSERT INTO content_items (id, brand, product_url, product_title, product_image_url, product_id, campaign_goal, direction, target_audience, pivot_notes, platform, status, due_date, publish_date, assignee, created_by)
+         VALUES ($1,$2,$3,$4,$5,$6,$7::jsonb,$8::jsonb,$9::jsonb,$10,$11,'idea',$12,$13,$14,$15)`,
+        [id, brand, product_url, product_title, product_image_url, product_id, campaignGoalJson, directionJson, targetAudienceJson, pivot_notes, platform, due_date, publish_date, assignee, req.user!.id]
       );
 
       await logAudit({
@@ -141,8 +148,9 @@ router.put(
     body('product_url').optional().trim(),
     body('product_title').optional().trim(),
     body('product_image_url').optional().trim(),
-    body('campaign_goal').optional().trim(),
-    body('direction').optional().trim(),
+    body('campaign_goal').optional(),
+    body('direction').optional(),
+    body('target_audience').optional(),
     body('pivot_notes').optional().trim(),
     body('due_date').optional({ nullable: true }),
     body('publish_date').optional({ nullable: true }),
@@ -156,15 +164,23 @@ router.put(
         return res.status(404).json({ error: 'Item not found' });
       }
 
-      const fields = ['brand', 'product_url', 'product_title', 'product_image_url', 'campaign_goal', 'direction', 'pivot_notes', 'platform', 'due_date', 'publish_date', 'assignee'];
+      const jsonFields = new Set(['campaign_goal', 'direction', 'target_audience']);
+      const fields = ['brand', 'product_url', 'product_title', 'product_image_url', 'product_id', 'campaign_goal', 'direction', 'target_audience', 'pivot_notes', 'platform', 'due_date', 'publish_date', 'assignee'];
       const updates: string[] = [];
       const values: unknown[] = [];
       let idx = 1;
 
       for (const field of fields) {
         if (req.body[field] !== undefined) {
-          updates.push(`${field} = $${idx++}`);
-          values.push(req.body[field]);
+          if (jsonFields.has(field)) {
+            const val = req.body[field];
+            const jsonVal = val && typeof val === 'object' ? JSON.stringify(val) : val;
+            updates.push(`${field} = $${idx++}::jsonb`);
+            values.push(jsonVal);
+          } else {
+            updates.push(`${field} = $${idx++}`);
+            values.push(req.body[field]);
+          }
         }
       }
 

@@ -132,7 +132,20 @@ export function ItemDetailPage() {
               </span>
               {item.platform && <Badge variant="secondary">{item.platform}</Badge>}
             </div>
-            {item.campaign_goal && <p className="text-sm text-[hsl(var(--th-text-secondary))] mb-3">{item.campaign_goal}</p>}
+            {item.campaign_goal && (
+              <div className="mb-3">
+                {typeof item.campaign_goal === "string" ? (
+                  <p className="text-sm text-[hsl(var(--th-text-secondary))]">{item.campaign_goal}</p>
+                ) : (
+                  <div>
+                    <p className="text-sm font-medium text-[hsl(var(--th-text))]">{item.campaign_goal.title}</p>
+                    {item.campaign_goal.content && (
+                      <p className="text-xs text-[hsl(var(--th-text-muted))] mt-1 bg-[hsl(var(--th-input)/0.5)] rounded p-2">{item.campaign_goal.content}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {item.status === "idea" && (
@@ -159,7 +172,46 @@ export function ItemDetailPage() {
         {item.direction && (
           <div className="mb-3">
             <label className="text-xs font-medium text-[hsl(var(--th-text-muted))] mb-1 block">Direction</label>
-            <p className="text-sm text-[hsl(var(--th-text-secondary))]">{item.direction}</p>
+            {typeof item.direction === "string" ? (
+              <p className="text-sm text-[hsl(var(--th-text-secondary))]">{item.direction}</p>
+            ) : (
+              <div className="space-y-2">
+                {item.direction.benefits && item.direction.benefits.length > 0 && (
+                  <div>
+                    <span className="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider">Benefits</span>
+                    <ul className="mt-1 space-y-0.5">
+                      {item.direction.benefits.map((b: string, i: number) => (
+                        <li key={i} className="text-sm text-[hsl(var(--th-text-secondary))] flex items-start gap-2">
+                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0" />{b}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {item.direction.pain_points && item.direction.pain_points.length > 0 && (
+                  <div>
+                    <span className="text-[11px] font-semibold text-amber-400 uppercase tracking-wider">Pain Points</span>
+                    <ul className="mt-1 space-y-0.5">
+                      {item.direction.pain_points.map((p: string, i: number) => (
+                        <li key={i} className="text-sm text-[hsl(var(--th-text-secondary))] flex items-start gap-2">
+                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-amber-400 shrink-0" />{p}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+        {item.target_audience && Array.isArray(item.target_audience) && item.target_audience.length > 0 && (
+          <div className="mb-3">
+            <label className="text-xs font-medium text-[hsl(var(--th-text-muted))] mb-1 block">Target Audience</label>
+            <div className="flex flex-wrap gap-1.5">
+              {item.target_audience.map((a: string, i: number) => (
+                <span key={i} className="text-xs px-2 py-1 rounded-full bg-cyan-500/15 text-cyan-400 font-medium">{a}</span>
+              ))}
+            </div>
           </div>
         )}
         {item.pivot_notes && (
